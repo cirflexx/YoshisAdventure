@@ -1,0 +1,143 @@
+
+/*<<<<<<<<<<<  GENERAL  >>>>>>>>>>>*/
+body {
+    background-color: #666;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow:hidden;
+    margin:0px; padding:0px;
+    font-family: 'Press Start 2P', cursive;
+}
+
+body * {
+    position: absolute;
+    display: block;
+    margin:0px; padding:0px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+}
+
+
+/*<<<<<<<<<<<  SCENE  >>>>>>>>>>>*/
+container {
+    width:800px; height:600px;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    overflow:hidden;
+}
+
+sky {
+    background-image: url(../images/sky.png);
+    background-repeat: repeat-x;
+    width:1600px; height:600px;
+    animation: skyanimation 8s linear infinite;
+}
+
+plateau {
+    background-image: url(../images/plateau.png);
+    background-repeat: repeat-x;
+    width:3000px; 
+    height:200px;
+    animation: plateauanimation 3.4s linear infinite;
+}
+
+cloud {
+    background-image: url(../images/cloud.png);
+    width:150px; height: 57px;
+    animation: cloudanimation 19s linear infinite;
+}
+
+
+/*<<<<<<<<<<<  PLAYER DEAD  >>>>>>>>>>>*/
+gameOver {
+    color:yellow;
+    font-size : 50px;
+    padding:20px;
+    top: 2%
+}
+
+tryAgain {
+    color:yellow;
+    font-size : 20px;
+    padding:20px;
+    top: 20%
+}
+
+
+/*<<<<<<<<<<<  BUTTONS  >>>>>>>>>>>*/
+refreshPage{
+    background-image: url('http://www.freeiconspng.com/uploads/reload-icon-20.png');
+    background-size:50px;
+    width: 50px;
+    height: 50px;
+    right: 2%;
+    top: 2%
+}
+
+
+/*<<<<<<<<<<<  CHARACTERS  >>>>>>>>>>>*/
+yoshi {
+    background-image: url(../images/yoshi.png);
+    background-size: 50px;
+    width:50px; height: 50px;
+}
+
+egg{
+    background-image: url(../images/yoshi_egg.png);
+    background-size: 50px;
+    width:50px; height: 50px;
+}
+
+vehicleCloud{
+    background-image: url(../images/vehicleCloud.gif);
+    background-size: 100%;
+    width:70px; height: 70px;
+}
+
+koopa {
+    background-image: url(https://media.giphy.com/media/BQLQajpo7ZhuM/giphy.gif?response_id=5921dc632a5ef1ad6795b6a0);
+    background-size: 50px;
+    width:50px; height: 50px;
+}
+
+flying-koopa{
+    background-image: url(../images/koopa-flying.gif);
+    background-size: 70px;
+    width:70px; height: 70px;
+}
+
+
+/*<<<<<<<<<<<  ANIMATIONS  >>>>>>>>>>>*/
+.animationpaused {
+    animation-play-state: paused;
+}
+
+.animationresumed {
+    animation-play-state: running;
+}
+
+@keyframes cloudanimation {
+  0% {
+    transform: translate(800px, 30px);
+  }
+  100% {
+    transform: translate(-150px, 30px);
+  }
+}
+
+@keyframes plateauanimation {
+  0% {
+    transform: translate(0px, 400px);
+  }
+  100% {
+    transform: translate(-800px, 400px);
+  }
+}
+
+@keyframes skyanimation {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(-800px, 0px);
+  }
+}
