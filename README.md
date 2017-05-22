@@ -5,11 +5,11 @@ Yoshi's Adventure is space invaders in een Mario jasje. Het doel is om zo veel m
 Als je dood bent begin je weer vanaf het begin.
 
 ## Controls
-Spatie =  schieten
-W = omhoog
-A = Naar links
-S = Naar beneden
-D = Naar rechts
+- Spatie =  schieten
+- W = omhoog
+- A = Naar links
+- S = Naar beneden
+- D = Naar rechts
 
 Rechts boven in de hoek staat een refresh knop, als je op deze klikt wordt de website opnieuw geladen.
 
