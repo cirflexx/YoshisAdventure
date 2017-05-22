@@ -1,5 +1,8 @@
 class Yoshi {
     private game: Game;
+    private vehicleCloud : VehicleCloud;
+    private _behavior : Behavior
+
     public speed: number;
     public div: HTMLElement;
     public x: number;
@@ -7,9 +10,6 @@ class Yoshi {
     public height : number;
     public width : number;
     public jumpDirection: number;
-    private vehicleCloud : VehicleCloud;
-
-    private _behavior : Behavior;
 
 	public get behavior(): Behavior {
 		return this._behavior;

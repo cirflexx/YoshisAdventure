@@ -6,11 +6,11 @@ class Game {
     private vehicleCloud : VehicleCloud;
     private mv : MoveVertical;
     private egg:  Egg;
-
-    public collision: boolean;
     private static instance: Game;
-    private timer : number  = 200;
+    
+    public collision: boolean;
     public running: boolean = true;
+    private timer : number  = 200;
 
     constructor() {
         let container = document.getElementById("container");

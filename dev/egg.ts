@@ -1,12 +1,13 @@
 class Egg {
 
     public speed:number;
-    public div:HTMLElement;
+    private div:HTMLElement;
     public x:number;
     public y:number;
     public height:number;
     public width: number;
-    public behavior: Behavior;
+    
+    private behavior: Behavior;
             
     constructor(parent:HTMLElement) {
         this.div = document.createElement("egg");
