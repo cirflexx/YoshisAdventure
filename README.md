@@ -23,3 +23,6 @@ Interface/ Strategy - Deze heb ik toegepast om de Stategy pattern toe te passen,
 Singleton - Deze heb ik aangemaakt in de game.ts, zodat deze in elke andere class is aan te spreken zonder gedoe. Wordt meerdere keren gebruikt in yoshi.ts.
 Encapsulation - In bijna elke file zit incapsulation, dit staat bovenaan de file.
 Composition -  Dit heb ik gebruikt in Game, Yoshi, vehicleCloud en elke file in de Monsters map.
+
+## UML
+![alt text](https://raw.githubusercontent.com/cirflexx/YoshisAdventure/master/UML-YoshisRevenge.png)
