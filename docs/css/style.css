@@ -46,6 +46,13 @@ cloud {
     animation: cloudanimation 19s linear infinite;
 }
 
+/* Score door Robin */
+score {
+    color:yellow;
+    font-size : 22px;
+    padding:20px;
+}
+
 
 /*<<<<<<<<<<<  PLAYER DEAD  >>>>>>>>>>>*/
 gameOver {

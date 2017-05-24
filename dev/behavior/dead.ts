@@ -1,7 +1,8 @@
 class Dead implements Behavior{
         public yoshi : Yoshi;
         public vehicleCloud : VehicleCloud;
-        public mv : MoveVertical;
+        ///public mv : MoveVertical; Deze bestaat niet meer (door Robin)
+        public m : Move;
         public idle: Idle;
         public shoot: Shoot;        
 

@@ -2,9 +2,11 @@ class Game {
 
     private yoshi : Yoshi;
     private koopa : Koopa;
+    //private goomba : Goomba;
     private flyingKoopa: FlyingKoopa;
     private vehicleCloud : VehicleCloud;
-    private mv : MoveVertical;
+    //private mv : MoveVertical;
+    private m : Move;
     private egg:  Egg;
     private static instance: Game;
     
@@ -16,6 +18,7 @@ class Game {
         let container = document.getElementById("container");
         this.yoshi = new Yoshi(container, this);
         this.koopa = new Koopa(container);
+        //this.goomba = new Goomba(container);
         this.flyingKoopa = new FlyingKoopa(container);
 
         document.getElementsByTagName("refreshPage")[0].addEventListener("click", () => this.refreshPage());
@@ -27,6 +30,7 @@ class Game {
         this.checkCollision();
         this.yoshi.update();
         this.koopa.draw();
+        //this.goomba.draw();
         this.flyingKoopa.draw();
 
         if(this.running == true){
@@ -66,9 +70,12 @@ class Game {
         }
     }
 
-    public gameOver(){
+    public gameOver(score: number){
+
+        document.getElementById("tryAgain").innerHTML = "Game over! Score: " + score + ". Click refresh button to try again.";
+        
         document.getElementById("gameOver").innerHTML = "Game Over!";
-        document.getElementById("tryAgain").innerHTML = "Please click on the refresh button in the top right to try again!";
+        //document.getElementById("tryAgain").innerHTML = "Please click on the refresh button in the top right to try again!";
         document.getElementById("plateau").classList.add("animationpaused");
         document.getElementById("sky").classList.add("animationpaused");
         console.log("You're a dead yoshi...");

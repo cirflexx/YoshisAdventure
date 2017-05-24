@@ -1,10 +1,11 @@
 class Shoot implements Behavior{
         public yoshi : Yoshi;
         public vehicleCloud : VehicleCloud;
-        public mv : MoveVertical;
+        //public mv : MoveVertical;
         public idle: Idle;
         public dead : Dead;
-        public mh : MoveHorizontal;
+        //public mh : MoveHorizontal;
+        public m : Move;
         private egg: Egg;
 
     constructor(){
@@ -27,19 +28,19 @@ class Shoot implements Behavior{
     }
 
     public onGoUp(){
-        this.mv.onGoUp();
+        this.m.onGoUp();
     }
 
     public onGoDown(){
-        this.mv.onGoDown();
+        this.m.onGoDown();
     }
 
     public onGoForward(){
-        this.mh.onGoForward();
+        this.m.onGoForward();
     }
    
     public onGoBack(){
-        this.mh.onGoBack();
+        this.m.onGoBack();
     }
 
     public onIdle(){
