@@ -1,7 +1,7 @@
 class Egg {
 
     public speed:number;
-    private div:HTMLElement;
+    public div:HTMLElement;
     public x:number;
     public y:number;
     public height:number;

@@ -14,6 +14,7 @@ class Shoot implements Behavior{
     }
 
     public performBehavior() : void{
+        //Div in egg moet public zijn om er gebruik van te kunnen maken 
         this.egg.div.style.transform = "translate(" + this.egg.x + "px," + this.egg.y + "px)"; 
     }
 
