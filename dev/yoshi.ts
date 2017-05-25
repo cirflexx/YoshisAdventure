@@ -54,7 +54,7 @@ class Yoshi {
         }
 
         if(e.key == 'd' && Game.getInstance().running == true) {
-            // this.div.style.backgroundImage = "url('http://static.tumblr.com/4ea070e8e27105fc99069d5e21456305/ofhymms/XYMon1apq/tumblr_static_6cy45y7o5i0wocsgo0k4ks4gc.gif')";
+            // this.div.style.backgroundImage = "url('  ')";
             this._behavior = new MoveHorizontal(this);
             this.onGoForward();
         }
