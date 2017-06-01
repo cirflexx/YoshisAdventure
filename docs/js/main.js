@@ -1,3 +1,13 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var Egg = (function () {
     function Egg(parent) {
         this.div = document.createElement("egg");
@@ -15,8 +25,8 @@ var Egg = (function () {
 var Game = (function () {
     function Game() {
         var _this = this;
-        this.timer = 200;
         this.running = true;
+        this.timer = 200;
         var container = document.getElementById("container");
         this.yoshi = new Yoshi(container, this);
         this.koopa = new Koopa(container);
@@ -59,9 +69,9 @@ var Game = (function () {
             return this.collision = true;
         }
     };
-    Game.prototype.gameOver = function () {
+    Game.prototype.gameOver = function (score) {
+        document.getElementById("tryAgain").innerHTML = "Game over! Score: " + score + ". Click refresh button to try again.";
         document.getElementById("gameOver").innerHTML = "Game Over!";
-        document.getElementById("tryAgain").innerHTML = "Please click on the refresh button in the top right to try again!";
         document.getElementById("plateau").classList.add("animationpaused");
         document.getElementById("sky").classList.add("animationpaused");
         console.log("You're a dead yoshi...");
@@ -101,10 +111,10 @@ var Yoshi = (function () {
         this.y = 340;
         this.height = 70;
         this.width = 70;
+        this.score = 1;
         var vehicleCloud = new VehicleCloud(this.div, -18, 50);
-        this._behavior = new MoveHorizontal(this);
+        this._behavior = new Move(this);
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
-        window.addEventListener("keyup", function (e) { return _this.onKeyUp(e); });
     }
     Object.defineProperty(Yoshi.prototype, "behavior", {
         get: function () {
@@ -119,40 +129,36 @@ var Yoshi = (function () {
     Yoshi.prototype.onKeyDown = function (e) {
         console.log(e.key);
         if (e.key == 'w' && Game.getInstance().running == true) {
-            this._behavior = new MoveVertical(this);
             this.onGoUp();
         }
         if (e.key == 's' && Game.getInstance().running == true) {
-            this._behavior = new MoveVertical(this);
             this.onGoDown();
         }
         if (e.key == 'd' && Game.getInstance().running == true) {
-            this._behavior = new MoveHorizontal(this);
             this.onGoForward();
         }
         if (e.key == 'a' && Game.getInstance().running == true) {
-            this._behavior = new MoveHorizontal(this);
             this.onGoBack();
         }
         if (e.key == ' ' && Game.getInstance().running == true) {
-        }
-    };
-    Yoshi.prototype.onKeyUp = function (e) {
-        if (e.key == ' ' || e.key == 'd' || e.key == 'a') {
-            this.speed = 0;
         }
     };
     Yoshi.prototype.update = function () {
         this._behavior.performBehavior();
         this.onCollision();
         if (this.speed == 0 && Game.getInstance().collision == false) {
-            this.onIdle();
+            this._behavior.onIdle();
         }
     };
     Yoshi.prototype.onCollision = function () {
+        var g = Game.getInstance();
         if (Game.getInstance().collision == true) {
             this._behavior = new Dead(this);
-            this.onDead();
+            this._behavior.onDead();
+            g.gameOver(Math.floor(this.score));
+        }
+        else {
+            this.score += 0.040;
         }
     };
     Yoshi.prototype.onGoUp = function () {
@@ -219,16 +225,16 @@ var Idle = (function () {
         this.yoshi.div.style.backgroundImage = "url('https://media.giphy.com/media/brvL9sNJZtFZe/giphy.gif?response_id=59205316163de286ba4848ec')";
     };
     Idle.prototype.onGoForward = function () {
-        this.mh.onGoForward();
+        this.m.onGoForward();
     };
     Idle.prototype.onGoBack = function () {
-        this.mh.onGoBack();
+        this.m.onGoBack();
     };
     Idle.prototype.onGoUp = function () {
-        this.mv.onGoUp();
+        this.m.onGoUp();
     };
     Idle.prototype.onGoDown = function () {
-        this.mv.onGoDown();
+        this.m.onGoDown();
     };
     Idle.prototype.onDead = function () {
         this.dead.onDead();
@@ -238,74 +244,50 @@ var Idle = (function () {
     };
     return Idle;
 }());
-var MoveHorizontal = (function () {
-    function MoveHorizontal(y) {
+var Move = (function () {
+    function Move(y) {
         this.yoshi = y;
     }
-    MoveHorizontal.prototype.performBehavior = function () {
+    Move.prototype.performBehavior = function () {
         this.yoshi.div.style.transform = "translate(" + this.yoshi.x + "px," + this.yoshi.y + "px)";
     };
-    MoveHorizontal.prototype.onGoForward = function () {
+    Move.prototype.onGoForward = function () {
         this.yoshi.speed = 5;
         this.yoshi.x += this.yoshi.speed;
+        if (this.yoshi.speed >= 1) {
+            this.yoshi.speed = 1;
+        }
+        else {
+            this.yoshi.speed += 1;
+        }
     };
-    MoveHorizontal.prototype.onGoBack = function () {
+    Move.prototype.onGoBack = function () {
         this.yoshi.speed = 5;
         this.yoshi.x -= this.yoshi.speed;
     };
-    MoveHorizontal.prototype.onGoUp = function () {
-        this.mv.onGoUp();
-    };
-    MoveHorizontal.prototype.onGoDown = function () {
-        this.mv.onGoDown();
-    };
-    MoveHorizontal.prototype.onIdle = function () {
-        this.yoshi.behavior = new Idle(this.yoshi);
-    };
-    MoveHorizontal.prototype.onDead = function () {
-        this.yoshi.behavior = new Dead(this.yoshi);
-    };
-    MoveHorizontal.prototype.onShoot = function () {
-        this.shoot.onShoot();
-    };
-    return MoveHorizontal;
-}());
-var MoveVertical = (function () {
-    function MoveVertical(y) {
-        this.yoshi = y;
-    }
-    MoveVertical.prototype.performBehavior = function () {
-        this.yoshi.div.style.transform = "translate(" + this.yoshi.x + "px," + this.yoshi.y + "px)";
-    };
-    MoveVertical.prototype.onGoUp = function () {
+    Move.prototype.onGoUp = function () {
         this.yoshi.y -= this.yoshi.jumpDirection = 3;
         if (this.yoshi.y < 0) {
             this.yoshi.y = 0;
         }
     };
-    MoveVertical.prototype.onGoDown = function () {
+    Move.prototype.onGoDown = function () {
         this.yoshi.y += this.yoshi.jumpDirection = 3;
         if (this.yoshi.y > 332) {
             this.yoshi.y = 332;
         }
         console.log("this is Y: " + this.yoshi.y);
     };
-    MoveVertical.prototype.onGoForward = function () {
-        this.mh.onGoForward();
-    };
-    MoveVertical.prototype.onGoBack = function () {
-        this.mh.onGoBack();
-    };
-    MoveVertical.prototype.onIdle = function () {
+    Move.prototype.onIdle = function () {
         this.yoshi.behavior = new Idle(this.yoshi);
     };
-    MoveVertical.prototype.onDead = function () {
-        this.dead.onDead();
+    Move.prototype.onDead = function () {
+        this.yoshi.behavior = new Dead(this.yoshi);
     };
-    MoveVertical.prototype.onShoot = function () {
+    Move.prototype.onShoot = function () {
         this.shoot.onShoot();
     };
-    return MoveVertical;
+    return Move;
 }());
 var Shoot = (function () {
     function Shoot() {
@@ -323,68 +305,97 @@ var Shoot = (function () {
         this.dead.onDead();
     };
     Shoot.prototype.onGoUp = function () {
-        this.mv.onGoUp();
+        this.m.onGoUp();
     };
     Shoot.prototype.onGoDown = function () {
-        this.mv.onGoDown();
+        this.m.onGoDown();
     };
     Shoot.prototype.onGoForward = function () {
-        this.mh.onGoForward();
+        this.m.onGoForward();
     };
     Shoot.prototype.onGoBack = function () {
-        this.mh.onGoBack();
+        this.m.onGoBack();
     };
     Shoot.prototype.onIdle = function () {
         this.idle.onIdle();
     };
     return Shoot;
 }());
-var FlyingKoopa = (function () {
-    function FlyingKoopa(parent) {
-        this.div = document.createElement("flying-koopa");
+var Enemy = (function () {
+    function Enemy(item, parent) {
+        this.div = document.createElement(item);
         parent.appendChild(this.div);
-        this.speed = -3;
-        this.x = 1000;
-        this.y = 250;
-        this.height = 70;
-        this.width = 70;
+        this.speed = -4;
+    }
+    Enemy.prototype.draw = function () {
+        this.x += this.speed;
+        this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
+        if (this.x <= -93) {
+            this.x = 1283;
+        }
+    };
+    return Enemy;
+}());
+var FlyingKoopa = (function (_super) {
+    __extends(FlyingKoopa, _super);
+    function FlyingKoopa(parent) {
+        var _this = _super.call(this, "flying-koopa", parent) || this;
+        _this.speed = -3;
+        _this.x = 1000;
+        _this.y = 250;
+        _this.height = 70;
+        _this.width = 70;
+        return _this;
     }
     FlyingKoopa.prototype.draw = function () {
         this.x += this.speed;
         this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
+        if (this.x <= -130) {
+            this.x = 900;
+        }
     };
     return FlyingKoopa;
-}());
-var Goomba = (function () {
+}(Enemy));
+var Goomba = (function (_super) {
+    __extends(Goomba, _super);
     function Goomba(parent) {
-        this.div = document.createElement("goomba");
-        parent.appendChild(this.div);
-        this.speed = -4;
-        this.x = 800;
-        this.y = 220;
-        this.height = 50;
-        this.width = 50;
+        var _this = _super.call(this, "goomba", parent) || this;
+        _this.div = document.createElement("goomba");
+        parent.appendChild(_this.div);
+        _this.speed = -4;
+        _this.x = 850;
+        _this.y = 220;
+        _this.height = 50;
+        _this.width = 50;
+        return _this;
     }
     Goomba.prototype.draw = function () {
         this.x += this.speed;
         this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
+        if (this.x <= -90) {
+            this.x = 900;
+        }
     };
     return Goomba;
-}());
-var Koopa = (function () {
+}(Enemy));
+var Koopa = (function (_super) {
+    __extends(Koopa, _super);
     function Koopa(parent) {
-        this.div = document.createElement("koopa");
-        parent.appendChild(this.div);
-        this.speed = -4;
-        this.x = 800;
-        this.y = 352;
-        this.height = 50;
-        this.width = 50;
+        var _this = _super.call(this, "koopa", parent) || this;
+        _this.speed = -5;
+        _this.x = 800;
+        _this.y = 352;
+        _this.height = 50;
+        _this.width = 50;
+        return _this;
     }
     Koopa.prototype.draw = function () {
         this.x += this.speed;
         this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
+        if (this.x <= -90) {
+            this.x = 900;
+        }
     };
     return Koopa;
-}());
+}(Enemy));
 //# sourceMappingURL=main.js.map

@@ -1,6 +1,12 @@
-/*class MoveHorizontal implements Behavior{
+
+
+// Code door Robin
+// Class MoveVertical en moveHorizontal zijn samengevoegd tot 1 move class.
+// Dit scheelt dubbele code, terwijl alles nog gewoon werkt.
+
+class Move implements Behavior{
         public yoshi : Yoshi;
-        public mv : MoveVertical;
+        //public mv : MoveVertical;
         public idle: Idle;
         public dead : Dead;
         public shoot: Shoot;
@@ -16,6 +22,13 @@
     public onGoForward(){
         this.yoshi.speed = 5;
         this.yoshi.x += this.yoshi.speed;
+
+        // test code door Robin
+        if(this.yoshi.speed >= 1){
+            this.yoshi.speed = 1;
+        }else{
+            this.yoshi.speed += 1;
+        }
     }
 
     public onGoBack(){
@@ -24,11 +37,20 @@
     }
 
     public onGoUp(){
-        this.mv.onGoUp();
+
+        this.yoshi.y -= this.yoshi.jumpDirection = 3;
+        if (this.yoshi.y < 0){
+            this.yoshi.y = 0;
+        }
     }
 
     public onGoDown(){
-        this.mv.onGoDown();
+
+        this.yoshi.y += this.yoshi.jumpDirection = 3;
+        if (this.yoshi.y > 332){
+            this.yoshi.y = 332;
+        }
+        console.log("this is Y: " + this.yoshi.y);
     }
 
     public onIdle(){
@@ -43,4 +65,4 @@
         this.shoot.onShoot();
     }    
     
-}*/
+}

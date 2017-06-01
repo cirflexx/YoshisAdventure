@@ -1,17 +1,18 @@
-class Koopa {
+/// <reference path="enemy.ts" />
+
+
+class Koopa extends Enemy{
 
     public speed:number;
-    private div:HTMLElement;
     public x:number;
     public y:number;
     public height:number;
     public width: number;
             
     constructor(parent:HTMLElement) {
-        this.div = document.createElement("koopa");
-        parent.appendChild(this.div);
+        super("koopa", parent);
 
-        this.speed = -4;
+        this.speed = -5;
         this.x = 800;
         this.y = 352;
         this.height = 50;
@@ -21,6 +22,11 @@ class Koopa {
     public draw():void {
         this.x += this.speed;
         this.div.style.transform ="translate("+this.x+"px,"+this.y+"px)";
-    }
 
+        // Code door Robin
+        // Als FlyingKoopa uit het scherm is, wordt hij teruggezet naar x = 900. Anders heeft de game geen uitdaging meer na een paar seconden
+        if(this.x <= -90){
+            this.x = 900;
+        }
+    }
 }

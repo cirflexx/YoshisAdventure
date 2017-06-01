@@ -1,7 +1,8 @@
 class Idle implements Behavior{
         public yoshi : Yoshi;
-        public mv : MoveVertical;
-        public mh : MoveHorizontal;
+        //public mv : MoveVertical; Deze bestaat niet meer (door Robin)
+        //public mh : MoveHorizontal; Deze bestaat niet meer (door Robin)
+        public m : Move;
         public dead: Dead;
         public shoot: Shoot;        
 
@@ -17,20 +18,21 @@ class Idle implements Behavior{
         this.yoshi.div.style.backgroundImage = "url('https://media.giphy.com/media/brvL9sNJZtFZe/giphy.gif?response_id=59205316163de286ba4848ec')";
     }
 
+    // mh en mv zijn hieronder vervangen door m (door Robin)
     public onGoForward(){
-        this.mh.onGoForward();
+        this.m.onGoForward();
     }
 
     public onGoBack(){
-        this.mh.onGoBack();
+        this.m.onGoBack();
     }
 
     public onGoUp(){
-        this.mv.onGoUp();
+        this.m.onGoUp();
     }
 
     public onGoDown(){
-        this.mv.onGoDown();
+        this.m.onGoDown();
     }
 
     public onDead(): void {
