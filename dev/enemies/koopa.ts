@@ -3,11 +3,6 @@
 
 class Koopa extends Enemy{
 
-    public speed:number;
-    public x:number;
-    public y:number;
-    public height:number;
-    public width: number;
             
     constructor(parent:HTMLElement) {
         super("koopa", parent);

@@ -1,26 +1,19 @@
 class Dead implements Behavior{
         public yoshi : Yoshi;
         public vehicleCloud : VehicleCloud;
-        ///public mv : MoveVertical; Deze bestaat niet meer (door Robin)
         public m : Move;
-        public idle: Idle;
         public shoot: Shoot;        
 
     constructor(y: Yoshi){
         this.yoshi = y;
-    }
-
-    public performBehavior() : void{
-    }
-
-    public onDead(): void {
         this.yoshi.speed  = 0;
         this.yoshi.div.style.backgroundImage = "url('images/yoshi-dead.gif')";
         this.yoshi.div.style.backgroundSize = "100%";
         this.yoshi.div.style.width = "70px";
         this.yoshi.div.style.height = "70px";;
+    }
 
-        Game.getInstance().gameOver();
+    public performBehavior() : void{
     }
 
     public onGoUp(){
@@ -35,8 +28,6 @@ class Dead implements Behavior{
     public onGoBack(){
     }
 
-    public onIdle(){
-    }
 
     public onShoot(): void{
     }

@@ -1,13 +1,10 @@
-class VehicleCloud {
+/// <reference path="gameObject.ts" />
 
-    public speed:number;
-    private div:HTMLElement;
-    public x:number;
-    public y:number;
-    public height:number;
-    public width: number;
+
+class VehicleCloud extends GameObject {
             
     constructor(parent:HTMLElement, _X: number, _Y: number) {
+        super();
         this.div = document.createElement("vehicleCloud");
         parent.appendChild(this.div);
 

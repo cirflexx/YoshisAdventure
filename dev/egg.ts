@@ -1,26 +1,25 @@
-class Egg {
+/// <reference path="gameObject.ts" />
 
-    public speed:number;
-    private div:HTMLElement;
-    public x:number;
-    public y:number;
-    public height:number;
-    public width: number;
+
+class Egg extends GameObject {
     
     private behavior: Behavior;
             
-    constructor(parent:HTMLElement) {
+    constructor(parent:HTMLElement, y: number, x: number) {
+        super();
         this.div = document.createElement("egg");
         parent.appendChild(this.div);
 
         this.speed = 5;
-        this.y = 332;
-        this.x = 0;
+        this.y = y;
+        this.x = x;
         this.height = 50;
         this.width = 50;
     }
 
     public draw():void {
+        this.x += this.speed;
+        this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
     }
 
 }

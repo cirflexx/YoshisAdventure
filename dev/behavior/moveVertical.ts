@@ -1,4 +1,4 @@
-/*class MoveVertical implements Behavior{
+class MoveVertical implements Behavior{
         public yoshi : Yoshi;
         public mh: MoveHorizontal;
         public idle: Idle;
@@ -51,4 +51,4 @@
         this.shoot.onShoot();
     }
     
-}*/
+}
