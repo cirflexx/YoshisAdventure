@@ -21,9 +21,14 @@ class FlyingKoopa extends Enemy {
         // Als FlyingKoopa uit het scherm is, wordt hij teruggezet naar x = 900. Anders heeft de game geen uitdaging meer na een paar seconden
         if(this.x <= -130){
             this.x = 900;
+<<<<<<< HEAD
             this.y = Math.floor(Math.random() * 270) + 1;
             this.speed = Math.floor(Math.random() * -6) - 1;
             Game.getInstance().score -=5;
+=======
+            this.y = Math.floor(Math.random() * 250) + 1;
+            this.speed = Math.floor(Math.random() * -6) - 1;
+>>>>>>> origin/master
         }
     }
 

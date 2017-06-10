@@ -36,6 +36,10 @@ var Game = (function () {
         this.score = 1;
         this.spawn50 = false;
         this.spawn100 = false;
+<<<<<<< HEAD
+=======
+        this.spawn150 = false;
+>>>>>>> origin/master
         var container = document.getElementById("container");
         this.yoshi = new Yoshi(container);
         this.koopa = new Koopa(container);
@@ -85,6 +89,7 @@ var Game = (function () {
                 this.yoshi.onEnemyCollision();
                 this.gameOver();
             }
+<<<<<<< HEAD
         }
         for (var _b = 0, _c = this.eggCollection; _b < _c.length; _b++) {
             var egg = _c[_b];
@@ -141,6 +146,54 @@ var Game = (function () {
             this.lakitu.draw();
         }
     };
+=======
+        }
+        for (var _b = 0, _c = this.eggCollection; _b < _c.length; _b++) {
+            var egg = _c[_b];
+            for (var _d = 0, _e = this.collisionArray; _d < _e.length; _d++) {
+                var enemy = _e[_d];
+                if (Utils.checkCollision(egg, enemy)) {
+                    console.log(egg + " raakt enemy");
+                    this.addScore();
+                    enemy.x = 1000;
+                    enemy.speed = Math.floor(Math.random() * -6) - 1;
+                    if (enemy == this.collisionArray[2]) {
+                        this.collisionArray[2].y = Math.floor(Math.random() * 250) + 1;
+                    }
+                    else if (enemy == this.collisionArray[3]) {
+                        this.collisionArray[3].y = Math.floor(Math.random() * 250) + 1;
+                    }
+                    this.eggCollection.splice(egg, 1);
+                    container.removeChild(egg.div);
+                }
+            }
+            if (egg.x >= 750) {
+                console.log(this.eggCollection);
+                this.eggCollection.splice(egg, 1);
+                container.removeChild(egg.div);
+            }
+        }
+    };
+    Game.prototype.liveScore = function () {
+        this.score += 0.020;
+        document.getElementById("liveScore").innerHTML = "Score: " + Math.floor(this.score);
+    };
+    Game.prototype.addScore = function () {
+        this.score += 10;
+    };
+    Game.prototype.createEnemiesOnScore = function () {
+        console.log("Score: " + Math.floor(this.score));
+        var container = document.getElementById("container");
+        if (this.score > 50 && this.score < 70 && !this.spawn50) {
+            this.flyingKoopa2 = new FlyingKoopa2(container);
+            this.collisionArray.push(this.flyingKoopa2);
+            this.spawn50 = true;
+        }
+        if (this.spawn50 || this.spawn100 || this.spawn150) {
+            this.flyingKoopa2.draw();
+        }
+    };
+>>>>>>> origin/master
     Game.prototype.gameOver = function () {
         document.getElementById("tryAgain").innerHTML = "Game over! Score: " + Math.floor(this.score) + ". Click refresh button to try again.";
         document.getElementById("liveScore").remove();
@@ -372,7 +425,11 @@ var FlyingKoopa = (function (_super) {
         _super.call(this, "flying-koopa", parent);
         this.speed = -3;
         this.x = 1000;
+<<<<<<< HEAD
         this.y = Math.floor(Math.random() * 270) + 1;
+=======
+        this.y = 250;
+>>>>>>> origin/master
         this.height = 70;
         this.width = 70;
     }
@@ -381,9 +438,14 @@ var FlyingKoopa = (function (_super) {
         this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
         if (this.x <= -130) {
             this.x = 900;
+<<<<<<< HEAD
             this.y = Math.floor(Math.random() * 270) + 1;
             this.speed = Math.floor(Math.random() * -6) - 1;
             Game.getInstance().score -= 5;
+=======
+            this.y = Math.floor(Math.random() * 250) + 1;
+            this.speed = Math.floor(Math.random() * -6) - 1;
+>>>>>>> origin/master
         }
     };
     return FlyingKoopa;
@@ -394,7 +456,11 @@ var FlyingKoopa2 = (function (_super) {
         _super.call(this, "flying-koopa2", parent);
         this.speed = -3;
         this.x = 1000;
+<<<<<<< HEAD
         this.y = Math.floor(Math.random() * 270) + 1;
+=======
+        this.y = Math.floor(Math.random() * 250) + 1;
+>>>>>>> origin/master
         this.height = 70;
         this.width = 70;
     }
@@ -403,9 +469,14 @@ var FlyingKoopa2 = (function (_super) {
         this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
         if (this.x <= -130) {
             this.x = 900;
+<<<<<<< HEAD
             this.y = Math.floor(Math.random() * 270) + 1;
             this.speed = Math.floor(Math.random() * -6) - 1;
             Game.getInstance().score -= 5;
+=======
+            this.y = Math.floor(Math.random() * 250) + 1;
+            this.speed = Math.floor(Math.random() * -6) - 1;
+>>>>>>> origin/master
         }
     };
     return FlyingKoopa2;
