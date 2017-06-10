@@ -46,8 +46,7 @@ cloud {
     animation: cloudanimation 19s linear infinite;
 }
 
-/* Score door Robin */
-score {
+liveScore {
     color:yellow;
     font-size : 22px;
     padding:20px;
@@ -110,6 +109,24 @@ flying-koopa{
     background-image: url(../images/koopa-flying.gif);
     background-size: 70px;
     width:70px; height: 70px;
+}
+
+flying-koopa2{
+    background-image: url(../images/koopa-flying-green.gif);
+    background-size: 70px;
+    width:70px; height: 70px;
+}
+
+lakitu{
+    background-image: url(http://rs543.pbsrc.com/albums/gg445/Floppingluigi/Lakitu.gif~c200);
+    background-size: 70px;
+    width:70px; height: 70px;
+}
+
+goomba{
+    background-image: url(https://media.giphy.com/media/ccMYCFtPpPxBK/giphy.gif);
+    background-size: 50px;
+    width:50px; height: 50px;
 }
 
 

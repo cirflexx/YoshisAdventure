@@ -1,10 +1,8 @@
 /// <reference path="enemy.ts" />
-
-
-class FlyingKoopa extends Enemy {
+class FlyingKoopa2 extends Enemy {
             
     constructor(parent:HTMLElement) {
-        super("flying-koopa", parent);
+        super("flying-koopa2", parent);
 
         this.speed = -3;
         this.x = 1000;

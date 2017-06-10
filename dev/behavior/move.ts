@@ -6,8 +6,6 @@
 
 class Move implements Behavior{
         public yoshi : Yoshi;
-        //public mv : MoveVertical;
-        public idle: Idle;
         public dead : Dead;
         public shoot: Shoot;
 
@@ -20,25 +18,23 @@ class Move implements Behavior{
     }
 
     public onGoForward(){
-        this.yoshi.speed = 5;
+        this.yoshi.speed = 7;
         this.yoshi.x += this.yoshi.speed;
 
-        // test code door Robin
-        if(this.yoshi.speed >= 1){
-            this.yoshi.speed = 1;
-        }else{
-            this.yoshi.speed += 1;
-        }
     }
 
     public onGoBack(){
         this.yoshi.speed = 5;
         this.yoshi.x -= this.yoshi.speed;
+        if (this.yoshi.x < 0){
+            this.yoshi.x = 0;
+        }
+
     }
 
     public onGoUp(){
 
-        this.yoshi.y -= this.yoshi.jumpDirection = 3;
+        this.yoshi.y -= this.yoshi.jumpDirection = 7;
         if (this.yoshi.y < 0){
             this.yoshi.y = 0;
         }
@@ -46,19 +42,11 @@ class Move implements Behavior{
 
     public onGoDown(){
 
-        this.yoshi.y += this.yoshi.jumpDirection = 3;
+        this.yoshi.y += this.yoshi.jumpDirection = 7;
         if (this.yoshi.y > 332){
             this.yoshi.y = 332;
         }
         console.log("this is Y: " + this.yoshi.y);
-    }
-
-    public onIdle(){
-        this.yoshi.behavior = new Idle(this.yoshi);
-    }
-
-    public onDead(): void {
-        this.yoshi.behavior = new Dead(this.yoshi);
     }
 
     public onShoot(): void{
