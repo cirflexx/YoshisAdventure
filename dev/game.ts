@@ -5,10 +5,7 @@ class Game {
     private goomba : Goomba;
     private flyingKoopa: FlyingKoopa;
     private flyingKoopa2: FlyingKoopa2;
-<<<<<<< HEAD
     private lakitu: Lakitu;
-=======
->>>>>>> origin/master
     private vehicleCloud : VehicleCloud;
     private m : Move;
     private static instance: Game;
@@ -20,16 +17,9 @@ class Game {
     private timer : number  = 200;
     private eggCollection = [];
 
-<<<<<<< HEAD
     public score: number = 1;
     private spawn50 : boolean = false;
     private spawn100 : boolean = false;
-=======
-    private score: number = 1;
-    private spawn50 : boolean = false;
-    private spawn100 : boolean = false;
-    private spawn150 : boolean = false;
->>>>>>> origin/master
 
     constructor() {
         let container = document.getElementById("container");
@@ -57,10 +47,6 @@ class Game {
         this.goomba.draw();
         this.flyingKoopa.draw();
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
         for (let egg of this.eggCollection) {
             egg.draw();
         }
@@ -100,18 +86,14 @@ class Game {
                 if(Utils.checkCollision(egg, enemy)){
                     console.log(egg + " raakt enemy");
                     this.addScore();
-<<<<<<< HEAD
 
                     this.eggCollection.splice(egg, 1);
                     container.removeChild(egg.div);
                     
-=======
->>>>>>> origin/master
                     enemy.x = 1000;
                     enemy.speed = Math.floor(Math.random() * -6) - 1;
 
                     if(enemy == this.collisionArray[2]){
-<<<<<<< HEAD
                         this.collisionArray[2].y = Math.floor(Math.random() * 300) + 1;
                     }
                     if(enemy == this.collisionArray[3]){
@@ -127,23 +109,6 @@ class Game {
                 console.log(this.eggCollection); 
                 this.eggCollection.splice(egg, 1);
                 container.removeChild(egg.div);   
-=======
-                        this.collisionArray[2].y = Math.floor(Math.random() * 250) + 1;
-                    }
-                    else if(enemy == this.collisionArray[3]){
-                        this.collisionArray[3].y = Math.floor(Math.random() * 250) + 1;
-                    }                    
-
-                    this.eggCollection.splice(egg, 1);
-                    container.removeChild(egg.div);
-                }
-            }
-            if(egg.x >= 750){
-                console.log(this.eggCollection); 
-                this.eggCollection.splice(egg, 1);
-                container.removeChild(egg.div);   
-
->>>>>>> origin/master
             } 
         }
     }
@@ -152,7 +117,6 @@ class Game {
         this.score += 0.020;
         document.getElementById("liveScore").innerHTML = "Score: " + Math.floor(this.score);
     }
-<<<<<<< HEAD
 
     public addScore(){
         this.score += 10;
@@ -160,17 +124,6 @@ class Game {
 
     public createEnemiesOnScore(){
         // Blijft enemies spawnen!
-=======
-
-    public addScore(){
-        this.score += 10;
-    }
-
-    public createEnemiesOnScore(){
-        // Blijft enemies spawnen!
-
-        console.log("Score: " + Math.floor(this.score));
->>>>>>> origin/master
         let container = document.getElementById("container");
 
         if(this.score > 50 && this.score  < 70 && !this.spawn50 ){
@@ -178,7 +131,6 @@ class Game {
             this.collisionArray.push(this.flyingKoopa2);
             this.spawn50 = true;
         }
-<<<<<<< HEAD
         else if(this.score > 100 && this.score  < 120 && !this.spawn100 ){
             this.lakitu= new Lakitu(container);
             this.collisionArray.push(this.lakitu);
@@ -191,18 +143,6 @@ class Game {
         if(this.spawn100){
             this.lakitu.draw();
         }
-=======
-        // else if(Math.floor(this.score) == 150){
-        //     this.flyingKoopa= new FlyingKoopa(container);
-        //     this.koopa= new Koopa(container);
-        //     this.collisionArray.push(this.flyingKoopa);
-        //     this.collisionArray.push(this.koopa);
-        // }
-
-        if(this.spawn50 || this.spawn100 || this.spawn150){
-            this.flyingKoopa2.draw();
-        }
->>>>>>> origin/master
         
     }
 

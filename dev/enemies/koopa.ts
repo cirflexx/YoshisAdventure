@@ -1,10 +1,5 @@
 /// <reference path="enemy.ts" />
 class Koopa extends Enemy{
-<<<<<<< HEAD
-=======
-
-            
->>>>>>> origin/master
     constructor(parent:HTMLElement) {
         super("koopa", parent);
 
