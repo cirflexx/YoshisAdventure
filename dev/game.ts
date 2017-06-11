@@ -202,7 +202,7 @@ class Game {
 
         // De refreshbutton die tijdens het spelen linksboven stond wordt met Greensock naar het midden gebracht en groter gemaakt.
         let refreshbtn = document.getElementById("btn_refreshPage");
-        TweenLite.to(refreshbtn, 2, {x:-380, y:270, scale:1.5});
+        TweenLite.to(refreshbtn, 2, {x:-365, y:270, scale:1.5});
 
         this.timer --;
         if(this.timer < 1){
