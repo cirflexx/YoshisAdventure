@@ -1,5 +1,5 @@
 interface Behavior{
-    yoshi : Yoshi;
+    yoshi : Player.Yoshi;
 
     performBehavior() : void;
     onGoUp() : void;

@@ -1,12 +1,12 @@
 class Shoot implements Behavior{
-        public yoshi : Yoshi;
-        public vehicleCloud : VehicleCloud;
+        public yoshi : Player.Yoshi;
+        public vehicleCloud : Player.VehicleCloud;
         public dead : Dead;
         public m : Move;
-        private egg: Egg;
+        private egg: Projectile.Egg;
 
     constructor(x: number, y: number){
-        let egg = new Egg(document.getElementById("container"), y, x);
+        let egg = new Projectile.Egg(document.getElementById("container"), y, x);
         Game.getInstance().addEgg(egg);
     }
 

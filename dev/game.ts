@@ -1,63 +1,80 @@
 class Game {
-
-    private yoshi : Yoshi;
-    private koopa : Koopa;
-    private goomba : Goomba;
-    private flyingKoopa: FlyingKoopa;
-    private flyingKoopa2: FlyingKoopa2;
-    private lakitu: Lakitu;
-    private vehicleCloud : VehicleCloud;
-    private m : Move;
     private static instance: Game;
-    private e : Egg;
-    private collisionArray = [];
-    private enemy: Enemy;
-    public collision: boolean;
+    private behavior: Behavior;
+
+    private yoshi : Player.Yoshi;
+    private koopa : Enemies.Koopa;
+    private goomba : Enemies.Goomba;
+    private flyingKoopa: Enemies.FlyingKoopaRed.FlyingKoopa;
+    private flyingKoopa2: Enemies.FlyingKoopaGreen.FlyingKoopa;
+    private lakitu: Enemies.Lakitu;
+
     public running: boolean = true;
     private timer : number  = 200;
-    private eggCollection = [];
-
     public score: number = 1;
+
+    private eggCollection = [];
+    private collisionArray = [];
+
     private spawn50 : boolean = false;
     private spawn100 : boolean = false;
 
-    constructor() {
-        let container = document.getElementById("container");
-        this.yoshi = new Yoshi(container);
-        this.koopa = new Koopa(container);
-        this.goomba = new Goomba(container);
-        this.flyingKoopa = new FlyingKoopa(container);
+    private sky: HTMLElement;
+    private plateau: HTMLElement;
+    private cloud: HTMLElement;
 
+    constructor() {
+
+        let container = document.getElementById("container");
+
+        // Yoshi en enemies worden in aangemaakt en in container gezet.
+        this.yoshi = new Player.Yoshi(container);
+        this.koopa = new Enemies.Koopa(container);
+        this.goomba = new Enemies.Goomba(container);
+        this.flyingKoopa = new Enemies.FlyingKoopaRed.FlyingKoopa(container);
+
+        // De enemies worden in de collisionArray gestopt.
         this.collisionArray.push(this.koopa);
         this.collisionArray.push(this.goomba);
         this.collisionArray.push(this.flyingKoopa);
 
-        console.log(this.collisionArray);
-        this.score = 1;
-        this.liveScore();
+        // De elemten worden gezocht en in variablen gezet
+        this.sky = document.getElementById("sky");
+        this.plateau = document.getElementById("plateau");
+        this.cloud = document.getElementById("cloud");
 
+        // Met de library Greensock heb ik de bovenstaande elementen geanimeerd. Hierdoor zijn de CSS animaties overbdig geworden.
+        TweenMax.to(this.sky, 3, {x:-800, y:0, repeat:-1,ease:Linear.easeNone});
+        TweenMax.to(this.plateau, 3, {x:-800, repeat:-1,ease:Linear.easeNone});
+        TweenMax.to(this.cloud, 5, {x:-1200, repeat:-1,ease:Linear.easeNone});
+        
+        // Er wordt een eventListener op de refreshknop gezet. Als deze wordt ingedrukt voert hij de refreshage functie uit.
         document.getElementsByTagName("refreshPage")[0].addEventListener("click", () => this.refreshPage());
         requestAnimationFrame(() => this.gameLoop());
     }
 
     private gameLoop(){
-        this.checkCollision();
         this.yoshi.update();
         this.koopa.draw();
         this.goomba.draw();
         this.flyingKoopa.draw();
 
+        // Laat elk ei uit de array bewegen.
         for (let egg of this.eggCollection) {
             egg.draw();
         }
+
         this.liveScore();
         this.createEnemiesOnScore();
+        this.checkCollision();
 
+        // Checkt of het spel draait, zo niet (als gameover is) dan stopt het spel met draaien.
         if(this.running == true){
             requestAnimationFrame(() => this.gameLoop());
         }
     }
 
+    // Er wordt een Singleton van Game aangemaakt.
     public static getInstance() {
         if (! Game.instance) {
             Game.instance = new Game();
@@ -66,54 +83,61 @@ class Game {
     }
 
     public refreshPage(){
+        // Refresht de pagina.
         window.location.reload(true);
     }
 
     public checkCollision() : void{
         let container = document.getElementById('container');
 
-        // check yoshi tegen enemies
+        // checkt of yoshi tegen enemies aan komt
         for(let enemy of this.collisionArray) {
             if(Utils.checkCollision(this.yoshi, enemy)){
-                console.log(enemy + " raakt yoshi");
+                // Zorgt voor de animatie dat Yoshi dood gaat.
                 this.yoshi.onEnemyCollision();
+                // Als Yoshi tegen een enemy aan komt roept het spel de funtie gameOver aan. Het spel is afgelopen.
                 this.gameOver();
             }
         }
 
+        // Checkt of het ei tegen een enemy aan komt.
         for (let egg of this.eggCollection){
              for(let enemy of this.collisionArray) {
                 if(Utils.checkCollision(egg, enemy)){
-                    console.log(egg + " raakt enemy");
+                    // Als een ei een monster raakt wordt de addScore functie aangeroepen (score +10 punten).
                     this.addScore();
 
-                    this.eggCollection.splice(egg, 1);
-                    container.removeChild(egg.div);
-                    
+                    // als het ei een enemy raakt wordt deze enemy terug gezet op 1000 en een random speed meegegeven.
                     enemy.x = 1000;
                     enemy.speed = Math.floor(Math.random() * -6) - 1;
 
+                    // Checkt of een van de vliegende monsters is geraakt en geeft een random y positie mee.
                     if(enemy == this.collisionArray[2]){
-                        this.collisionArray[2].y = Math.floor(Math.random() * 300) + 1;
+                        this.flyingKoopa.y = Math.floor(Math.random() * 300) + 1;
                     }
                     if(enemy == this.collisionArray[3]){
-                        this.collisionArray[3].y = Math.floor(Math.random() * 300) + 1;
+                        this.flyingKoopa2.y = Math.floor(Math.random() * 300) + 1;
                     } 
                     if(enemy == this.collisionArray[4]){
-                        this.collisionArray[4].y = Math.floor(Math.random() * 300) + 1;
-                    }                    
+                        this.lakitu.y = Math.floor(Math.random() * 300) + 1;
+                    }
+                    
+                    // Als het ei een monster aangeraakt heeft wordt het verwijderd en uit de array gehaald.
+                    this.eggCollection.splice(egg, 1);
+                    egg.div.remove(); 
+  
                 }
             }
-
+            // Als het ei links uit het veld is wordt deze uit de array gehaald en verwijderd uit de game.
             if(egg.x >= 1200){
-                console.log(this.eggCollection); 
                 this.eggCollection.splice(egg, 1);
-                container.removeChild(egg.div);   
+                egg.div.remove();    
             } 
         }
     }
 
     public liveScore(){
+        // Er wordt (bijna) elke seconde een punt bij score opgeteld.
         this.score += 0.020;
         document.getElementById("liveScore").innerHTML = "Score: " + Math.floor(this.score);
     }
@@ -123,20 +147,24 @@ class Game {
     }
 
     public createEnemiesOnScore(){
-        // Blijft enemies spawnen!
         let container = document.getElementById("container");
 
+        // Als de score tussen de 50-70 is wordt een nieuwe Flyingkoopa in het spel gezet en in de collisionArray.
         if(this.score > 50 && this.score  < 70 && !this.spawn50 ){
-            this.flyingKoopa2= new FlyingKoopa2(container);
+            this.flyingKoopa2= new Enemies.FlyingKoopaGreen.FlyingKoopa(container);
             this.collisionArray.push(this.flyingKoopa2);
+            // Zorgt ervoor dat hij maar 1 keer in het spel wordt gezet
             this.spawn50 = true;
         }
+        // Als de score tussen de 100-120 is wordt een Lakitu in het spel gezet en in de collisionArray.
         else if(this.score > 100 && this.score  < 120 && !this.spawn100 ){
-            this.lakitu= new Lakitu(container);
+            this.lakitu= new Enemies.Lakitu(container);
             this.collisionArray.push(this.lakitu);
+            // Zorgt ervoor dat hij maar 1 keer in het spel wordt gezet
             this.spawn100 = true;
         }
 
+        // Als de monsters in het spel wordt gezet worden deze getekent.
         if(this.spawn50){
             this.flyingKoopa2.draw();
         }
@@ -149,12 +177,32 @@ class Game {
 
     public gameOver(){
 
-        document.getElementById("tryAgain").innerHTML = "Game over! Score: " + Math.floor(this.score) + ". Click refresh button to try again.";
-        document.getElementById("liveScore").remove();
+        let counter = { score: 0 };
+        TweenMax.to(counter, 2, {
+            score: Math.floor(this.score), 
+            onUpdate: function () {
+                document.getElementById("endScore").innerHTML = " "+ Math.floor(counter.score);
+            },
+            ease:Circ.easeOut
+        });
+
+
+        // De spelers is af dus de Greensock animaties worden stop gezet.
+        TweenMax.killTweensOf(this.sky);
+        TweenMax.killTweensOf(this.plateau);
+        TweenMax.killTweensOf(this.cloud);
+
+        // Er wordt text op het scherm gezet met de score en hoe je opnieuw kan spelen.
+        document.getElementById("score").innerHTML = "Score";
         document.getElementById("gameOver").innerHTML = "Game Over!";
-        document.getElementById("plateau").classList.add("animationpaused");
-        document.getElementById("sky").classList.add("animationpaused");
-        console.log("You're a dead yoshi...");
+        document.getElementById("tryAgain").innerHTML = "You are dead! Click refresh button to try again.";
+        
+        // De score die tijdens het spelen link boven stond wordt verwijderd.
+        document.getElementById("liveScore").remove();
+
+        // De refreshbutton die tijdens het spelen linksboven stond wordt met Greensock naar het midden gebracht en groter gemaakt.
+        let refreshbtn = document.getElementById("btn_refreshPage");
+        TweenLite.to(refreshbtn, 2, {x:-380, y:270, scale:1.5});
 
         this.timer --;
         if(this.timer < 1){
@@ -163,7 +211,12 @@ class Game {
         console.log(this.timer);
     }
 
+    public showScore(){
+       
+    }
+
     public addEgg(egg){
+        // De aagemaakte eieren worden in een array geplaatst.
         this.eggCollection.push(egg);
         console.log(this.eggCollection);
     }
@@ -172,5 +225,6 @@ class Game {
 
 // load
 window.addEventListener("load", function() {
+    // Er wordt een Sigleton van Game aangeroepen.
     let g : Game = Game.getInstance();
 });

@@ -29,7 +29,7 @@ sky {
     background-image: url(../images/sky.png);
     background-repeat: repeat-x;
     width:1600px; height:600px;
-    animation: skyanimation 8s linear infinite;
+    /*animation: skyanimation 8s linear infinite;*/
 }
 
 plateau {
@@ -37,13 +37,17 @@ plateau {
     background-repeat: repeat-x;
     width:3000px; 
     height:200px;
-    animation: plateauanimation 3.4s linear infinite;
+    top: 400px;
+    /*animation: plateauanimation 3.4s linear infinite;*/
 }
 
 cloud {
     background-image: url(../images/cloud.png);
+    background-repeat: repeat-x;
     width:150px; height: 57px;
-    animation: cloudanimation 19s linear infinite;
+    left: 1000px;
+    top: 60px;
+    /*animation: cloudanimation 19s linear infinite;*/
 }
 
 liveScore {
@@ -58,14 +62,37 @@ gameOver {
     color:yellow;
     font-size : 50px;
     padding:20px;
-    top: 2%
+    top: 2%;
+    display:block;
+    width: 100%;
+    text-align: center;
+}
+
+score {
+    color:yellow;
+    font-size : 30px;
+    padding:20px;
+    top: 15%;
+    display:block;
+    width: 100%;
+    text-align: center;
+}
+
+endScore{
+    color:yellow;
+    font-size : 40px;
+    padding:20px;
+    top: 25%;
+    display:block;
+    width: 100%;
+    text-align: center;
 }
 
 tryAgain {
     color:yellow;
-    font-size : 20px;
+    font-size : 18px;
     padding:20px;
-    top: 20%
+    top: 35%
 }
 
 
@@ -127,41 +154,4 @@ goomba{
     background-image: url(https://media.giphy.com/media/ccMYCFtPpPxBK/giphy.gif);
     background-size: 50px;
     width:50px; height: 50px;
-}
-
-
-/*<<<<<<<<<<<  ANIMATIONS  >>>>>>>>>>>*/
-.animationpaused {
-    animation-play-state: paused;
-}
-
-.animationresumed {
-    animation-play-state: running;
-}
-
-@keyframes cloudanimation {
-  0% {
-    transform: translate(800px, 30px);
-  }
-  100% {
-    transform: translate(-150px, 30px);
-  }
-}
-
-@keyframes plateauanimation {
-  0% {
-    transform: translate(0px, 400px);
-  }
-  100% {
-    transform: translate(-800px, 400px);
-  }
-}
-
-@keyframes skyanimation {
-  0% {
-    transform: translate(0px, 0px);
-  }
-  100% {
-    transform: translate(-800px, 0px);
-  }
 }

@@ -1,10 +1,7 @@
 class Dead implements Behavior{
-        public yoshi : Yoshi;
-        public vehicleCloud : VehicleCloud;
-        public m : Move;
-        public shoot: Shoot;        
+        public yoshi : Player.Yoshi;       
 
-    constructor(y: Yoshi){
+    constructor(y: Player.Yoshi){
         this.yoshi = y;
         this.yoshi.speed  = 0;
         this.yoshi.div.style.backgroundImage = "url('images/yoshi-dead.gif')";
@@ -28,8 +25,6 @@ class Dead implements Behavior{
     public onGoBack(){
     }
 
-
     public onShoot(): void{
     }
-    
 }

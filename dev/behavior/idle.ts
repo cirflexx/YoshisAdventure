@@ -1,12 +1,10 @@
 class Idle implements Behavior{
-        public yoshi : Yoshi;
-        public mv : MoveVertical;
-        public mh : MoveHorizontal;
+        public yoshi : Player.Yoshi;
         public dead: Dead;
-        public shoot: Shoot;        
+        public shoot: Shoot;  
+        public m: Move;      
 
-    constructor(y : Yoshi){
-        this.yoshi = y;
+    constructor(y : Player.Yoshi){
     }
 
     public performBehavior() : void{
@@ -18,23 +16,19 @@ class Idle implements Behavior{
     }
 
     public onGoForward(){
-        this.mh.onGoForward();
+        this.m.onGoForward();
     }
 
     public onGoBack(){
-        this.mh.onGoBack();
+        this.m.onGoBack();
     }
 
     public onGoUp(){
-        this.mv.onGoUp();
+        this.m.onGoUp();
     }
 
     public onGoDown(){
-        this.mv.onGoDown();
-    }
-
-    public onDead(): void {
-        this.dead.onDead();
+        this.m.onGoDown();
     }
 
     public onShoot(): void{

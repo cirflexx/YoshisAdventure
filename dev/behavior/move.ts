@@ -1,15 +1,9 @@
-
-
-// Code door Robin
-// Class MoveVertical en moveHorizontal zijn samengevoegd tot 1 move class.
-// Dit scheelt dubbele code, terwijl alles nog gewoon werkt.
-
 class Move implements Behavior{
-        public yoshi : Yoshi;
+        public yoshi : Player.Yoshi;
         public dead : Dead;
         public shoot: Shoot;
 
-    constructor(y : Yoshi){
+    constructor(y : Player.Yoshi){
         this.yoshi = y;
     }
 
@@ -24,7 +18,7 @@ class Move implements Behavior{
     }
 
     public onGoBack(){
-        this.yoshi.speed = 5;
+        this.yoshi.speed = 7;
         this.yoshi.x -= this.yoshi.speed;
         if (this.yoshi.x < 0){
             this.yoshi.x = 0;
@@ -46,7 +40,6 @@ class Move implements Behavior{
         if (this.yoshi.y > 332){
             this.yoshi.y = 332;
         }
-        console.log("this is Y: " + this.yoshi.y);
     }
 
     public onShoot(): void{
