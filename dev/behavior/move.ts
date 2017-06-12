@@ -1,6 +1,5 @@
 class Move implements Behavior{
         public yoshi : Player.Yoshi;
-        public dead : Dead;
         public shoot: Shoot;
 
     constructor(y : Player.Yoshi){

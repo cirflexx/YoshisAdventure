@@ -155,3 +155,9 @@ goomba{
     background-size: 50px;
     width:50px; height: 50px;
 }
+
+powerup{
+    background-image: url(https://media.giphy.com/media/wfDBpViSDtwrK/giphy.gif);
+    background-size: 60px;
+    width:60px; height: 60px;
+}

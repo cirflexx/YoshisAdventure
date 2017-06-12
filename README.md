@@ -1,13 +1,15 @@
 # Yoshi's adventure
 
 ## Wat is het?
-Yoshi's Adventure is space invaders in een Mario jasje. Het doel is om zo veel mogenlijk munten te verdienen door monsters de doden en op het einde een baas.
-Als je dood bent begin je weer vanaf het begin.
+Yoshi's Adventure is space invaders in een Mario jasje. Het doel is om zo veel mogelijk punten te scoren door vijanden dood te maken. Laat je een vijand door dan verlies je punten.
+Als je dood ( door tegen een vijand aan te vliegen ) bent begin je weer vanaf het begin.
+
+Er is ook een powerup te krijgen in het spel (sneeuwvlokje), deze geeft je een voordeel voor een bepaalde tijd.
 
 https://cirflexx.github.io/YoshisAdventure/
 
 ## Controls
-- Spatie =  schieten
+- Spatie = schieten
 - W = omhoog
 - A = Naar links
 - S = Naar beneden
@@ -17,51 +19,25 @@ Rechts boven in de hoek staat een refresh knop, als je op deze klikt wordt de we
 
 ## Installatie
 - Fork dit project naar een map die makkelijk voor jou te berijken is.
-- Open het in je favoriete programma om in te programmeren ( dit kan ook in kladblok).
+- Open het in je favoriete programma  om in te programmeren ( Kladblok, Visual Code, Webstorm, etc...).
 - Ga naar de map docs en klik op index.HTML om het spel lokaal te spelen.
 
 ## Toepassingen
-- Interface/ Strategy - Deze heb ik toegepast om de Stategy pattern toe te passen, deze bevat het gedrag van Yoshi. De interface heet Behaviour.
+- Strategy - Deze heb ik toegepast om de Stategy pattern toe te passen, deze bevat het gedrag van Yoshi. De interface heet Behaviour.
+- Observer - Game is een Subject die checkt of Yoshi en de powerup elkaar raken. Als dit zo is stuurt deze een notifier af aan alle enemies. Deze worden dan voor 5 seconden erg sloom.
 - Singleton - Deze heb ik aangemaakt in de game.ts, zodat deze in elke andere class is aan te spreken zonder gedoe. Wordt meerdere keren gebruikt in yoshi.ts.
+- Interface - Gebruikt bij de strategy pattern en observer pattern. Bij strategy in behavior.ts. Bij observer in observer.ts en subject.ts.
 - Encapsulation - In bijna elke file zit incapsulation, dit staat bovenaan de file.
-- Composition -  Dit heb ik gebruikt in Game, Yoshi, vehicleCloud en elke file in de Monsters map.
+- Composition -  Dit heb ik gebruikt in Game, Yoshi, vehicleCloud en elke file in de Enemies map. Bijvoorbeeld in game.ts wordt een Goomba gemaakt. Deze geeft "container" en "this" mee, omdat de class Goomba hierom vraagt in de constructor (parent, subject:Subject);
+- Abstract class - enemies.ts is een abstract class. Deze bevat de draw voor Koopa en Goomba. In koopa.ts en goomba.ts wordt deze draw via de super aangeroepen.
+- Static class - In de utils.ts wordt er gechecked voor collision. Dit is een static class en wordt aangeroepen in de onCollision functie in game.ts.
+- Library - Ik heb greensock gebruikt om animaties te tonen. Zo wordt de score in het eindscherm voor de speler opgeteld en de refreshknop naar het midden gebracht(van rechtsboven). Ook zijn de animaties die eerst in de css waren vervangen door code in de game.ts.
+- Namespaces - In de player map en enemies map heb ik alle classes een namespace gegeven (behalve enemies.ts). Dit heb ik gedaan zodat mensen die de code lezen meteen weten of er een enemy of speler in het spel wordt gemaakt. Ook waren er 2 flying koopa's (rood en groen) hier was eerst geen onderscheid in te zien in de code, nu wel.
+- Enumeration - Staat in de enumerations folder. Hierin worden de keycodes omgezet in constanten die ik gebruik in yoshi.ts voor bewegen en schieten.
+- Polymorfisme - In yoshi.ts staat een keyboardEvent, die laat de speler bewegen en schieten als er op de knop is gedrukt. Een keyboard event hoefde ik zelf niet te coderen, maar bestaat wel.
+- Game Loop - In game.ts wordt in de constructor de functie gameloop aangeroepen. Deze roept de functies die erin staan constant uit omdat Game Loop zichzelf aanroept. Hierdoor wordt alles binnen Gameloop geupdated. 
 
 ## UML
 ![alt text](https://raw.githubusercontent.com/cirflexx/YoshisAdventure/master/UML-YoshisRevenge.png)
 
 -------------------------------------------------------------------------------------
-
-# Robin's feedback
-
-## UML
-- Je UML ziet er duidelijk uit. Je hebt de juiste icoontjes gebruikt ('a heeft een b' en 'x is een y').
-
-## Code
-- Interface: Je hebt een interface gebruikt voor behavior en hier heb je een Strategy Pattern aan gekoppeld. Zoals het hoort staat er geen code in je Interface.
-- Static Utility Method: Dit onderdeel is niet gebruikt in je project.
-- Singleton: Ik zie dat Singleton is toegepast in game.ts
-- Strategy Pattern: Je hebt een Strategy Pattern gebruikt voor het gedrag van Yoshi. Het gedrag van Yoshi is goed, maar ik zou moveHorizontal.ts en moveVertical.ts combineren tot 1 move.ts bestand (deze staat nu in de map behavior). Hierdoor heb je minder code, maar werkt alles nog wel. Hiervoor heb ik ook code uit yoshi.ts, idle.ts, shoot.ts, dead.ts en game.ts moeten wijzigen.
-- Encapsulation: Encapsulation is goed gebruikt.
-- Composition:
-- Inheritance: Zit er nog niet in, maar dit heb ik gemaakt voor je. flyingKoopa, goomba en koopa zijn allemaal enemies.
-
-## Veranderingen code
-- moveHorizontal en moveHorizontal zijn samengevoegd tot 1 move behavior (Strategy Pattern). Move is eigenlijk 1 gedrag en het scheelt toch een bestand + code. Hiervoor zijn aanpassingen gemaakt in yoshi.ts, idle.ts, shoot.ts, dead.ts en game.ts.
-- In yoshi.ts heb ik alle onKeyUp functies uitgecomment. De code van onKeyDown wordt alleen uitgevoerd als de knop ingedrukt is (zoals de naam al zegt). onKeyUp is dan overbodig.
-- In yoshi.ts heb ik de Singleton gebruikt zoals hij in de les is uitgelegd: les 2, slide 19. Deze is te vinden op regel 116 en 124.
-- Enemies (flyingKoopa, goomba en koopa) worden teruggezet naar x = 900 als ze uit het scherm zijn verdwenen. 
-- Basis code voor een score is geschreven in game.ts en yoshi.ts.
-- Goomba zit nog niet in je spel. Ik heb de basis code geschreven in game.ts.
-- Overerving toegepast met enemies (flyingKoopa, goomba en koopa), zijn allemaal een enemy. Enemy.ts is gemaakt en de enemies extenden van Enemy.
-- In ts.config wordt er 2x verwezen naar de dist map, waar /js/main.js in staat. Deze wordt nu aangepast in plaats die van in de docs map. Regel 10 moet ook docs zijn in plaats van dist. Anders wordt main.js in de map dist steeds aangepast, maar die in docs niet.
-
-## Comments
-Je gebruikt zo goed als geen comments in je code. Om je code duidelijker te maken voor andere mensen is het echt nodig om comments te plaatsen in je code.
-
-## Het spel
-- Ik weet niet of het de bedoeling is, maar het bewegen van Yoshi voelt best apart aan. Wanneer je 1x op D drukt, gaat Yoshi 1px naar rechts. Misschien is het leuker om Yoshi na het indrukken van een knop automatisch die kant op te laten gaan. Dit zorgt er voor dat het spel net wat vloeiender kan worden en misschien ook wat lastiger.
-- Nadat je je 2 enemies hebt gezien gebeurt er niks meer in het spel. Je kan hier bijvoorbeeld je enemies opnieuw plaatsen (het veranderen van de x positie (en misschien ook de y als je dat wil)).
-- Iets als een score zou je game leuker maken. In combinatie met het opnieuw positioneren van je enemies wordt je spel meer uitdagender. Je spel heeft dan ook een duidelijk doel: behaal een zo hoog mogelijke score. Je hebt al eens score gebruikt voor je project, dus deze kan je zo overnemen.
-
-## Beoordeling
-Voldoende

@@ -1,6 +1,6 @@
-class Game {
+class Game implements Subject {
+    public observers: Array<Observer> = new Array();
     private static instance: Game;
-    private behavior: Behavior;
 
     private yoshi : Player.Yoshi;
     private koopa : Enemies.Koopa;
@@ -8,30 +8,33 @@ class Game {
     private flyingKoopa: Enemies.FlyingKoopaRed.FlyingKoopa;
     private flyingKoopa2: Enemies.FlyingKoopaGreen.FlyingKoopa;
     private lakitu: Enemies.Lakitu;
+    private powerup: Powerup;
 
-    public running: boolean = true;
     private timer : number  = 200;
-    public score: number = 1;
+    private speedTimer : number = 500;
+    public running: boolean = true;
+    public score: number = 0;
+    public powerupActive : boolean = false;
 
     private eggCollection = [];
     private collisionArray = [];
 
     private spawn50 : boolean = false;
     private spawn100 : boolean = false;
+    private spawn150 : boolean = false;
 
     private sky: HTMLElement;
     private plateau: HTMLElement;
     private cloud: HTMLElement;
 
     constructor() {
-
         let container = document.getElementById("container");
 
         // Yoshi en enemies worden in aangemaakt en in container gezet.
         this.yoshi = new Player.Yoshi(container);
-        this.koopa = new Enemies.Koopa(container);
-        this.goomba = new Enemies.Goomba(container);
-        this.flyingKoopa = new Enemies.FlyingKoopaRed.FlyingKoopa(container);
+        this.koopa = new Enemies.Koopa(container, this);
+        this.goomba = new Enemies.Goomba(container, this);
+        this.flyingKoopa = new Enemies.FlyingKoopaRed.FlyingKoopa(container, this);
 
         // De enemies worden in de collisionArray gestopt.
         this.collisionArray.push(this.koopa);
@@ -51,6 +54,16 @@ class Game {
         // Er wordt een eventListener op de refreshknop gezet. Als deze wordt ingedrukt voert hij de refreshage functie uit.
         document.getElementsByTagName("refreshPage")[0].addEventListener("click", () => this.refreshPage());
         requestAnimationFrame(() => this.gameLoop());
+
+
+    }
+
+    public subscribe(o:Observer){
+        this.observers.push(o);
+    }
+
+    public unsubscribe(o:Observer){
+
     }
 
     private gameLoop(){
@@ -82,12 +95,12 @@ class Game {
         return Game.instance;
     }
 
-    public refreshPage(){
+    private refreshPage(){
         // Refresht de pagina.
         window.location.reload(true);
     }
 
-    public checkCollision() : void{
+    private checkCollision() : void{
         let container = document.getElementById('container');
 
         // checkt of yoshi tegen enemies aan komt
@@ -100,6 +113,19 @@ class Game {
             }
         }
 
+        for(let enemy of this.collisionArray) {
+            if(this.spawn150){
+                if(Utils.checkCollision(this.yoshi, this.powerup)){
+                        this.powerup.div.remove();
+                        for(let o of this.observers){
+                            o.notify();
+                        }
+                    }
+                    
+                }
+            }
+        
+
         // Checkt of het ei tegen een enemy aan komt.
         for (let egg of this.eggCollection){
              for(let enemy of this.collisionArray) {
@@ -109,8 +135,9 @@ class Game {
 
                     // als het ei een enemy raakt wordt deze enemy terug gezet op 1000 en een random speed meegegeven.
                     enemy.x = 1000;
-                    enemy.speed = Math.floor(Math.random() * -6) - 1;
-
+                    if(!this.powerupActive){
+                        enemy.speed = Math.floor(Math.random() * -6) - 1;
+                    }
                     // Checkt of een van de vliegende monsters is geraakt en geeft een random y positie mee.
                     if(enemy == this.collisionArray[2]){
                         this.flyingKoopa.y = Math.floor(Math.random() * 300) + 1;
@@ -136,32 +163,37 @@ class Game {
         }
     }
 
-    public liveScore(){
+    private liveScore(){
         // Er wordt (bijna) elke seconde een punt bij score opgeteld.
         this.score += 0.020;
         document.getElementById("liveScore").innerHTML = "Score: " + Math.floor(this.score);
     }
 
-    public addScore(){
+    private addScore(){
         this.score += 10;
     }
 
-    public createEnemiesOnScore(){
+    private createEnemiesOnScore(){
         let container = document.getElementById("container");
 
         // Als de score tussen de 50-70 is wordt een nieuwe Flyingkoopa in het spel gezet en in de collisionArray.
         if(this.score > 50 && this.score  < 70 && !this.spawn50 ){
-            this.flyingKoopa2= new Enemies.FlyingKoopaGreen.FlyingKoopa(container);
+            this.flyingKoopa2= new Enemies.FlyingKoopaGreen.FlyingKoopa(container, this);
             this.collisionArray.push(this.flyingKoopa2);
             // Zorgt ervoor dat hij maar 1 keer in het spel wordt gezet
             this.spawn50 = true;
         }
         // Als de score tussen de 100-120 is wordt een Lakitu in het spel gezet en in de collisionArray.
         else if(this.score > 100 && this.score  < 120 && !this.spawn100 ){
-            this.lakitu= new Enemies.Lakitu(container);
+            this.lakitu= new Enemies.Lakitu(container, this);
             this.collisionArray.push(this.lakitu);
             // Zorgt ervoor dat hij maar 1 keer in het spel wordt gezet
             this.spawn100 = true;
+        }
+        else if(this.score > 150 && this.score  < 170 && !this.spawn150 ){
+            this.powerup= new Powerup(container);
+            // Zorgt ervoor dat hij maar 1 keer in het spel wordt gezet
+            this.spawn150 = true;
         }
 
         // Als de monsters in het spel wordt gezet worden deze getekent.
@@ -171,11 +203,14 @@ class Game {
         if(this.spawn100){
             this.lakitu.draw();
         }
+        if(this.spawn150){
+            this.powerup.draw();
+        }
         
     }
 
 
-    public gameOver(){
+    private gameOver(){
 
         let counter = { score: 0 };
         TweenMax.to(counter, 2, {
@@ -209,10 +244,6 @@ class Game {
             this.running = false;
         }
         console.log(this.timer);
-    }
-
-    public showScore(){
-       
     }
 
     public addEgg(egg){

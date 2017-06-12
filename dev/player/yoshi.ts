@@ -2,12 +2,11 @@
 namespace Player{
     export class Yoshi extends GameObject {
         private behavior : Behavior
-        public egg: Projectile.Egg;
+        private egg: Projectile.Egg;
 
         public jumpDirection: number;
         private timer : number  = 1;
         private shooting : boolean = false;
-        public score: number;
 
 
         constructor(parent: HTMLElement) {

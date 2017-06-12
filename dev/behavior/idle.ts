@@ -1,6 +1,5 @@
 class Idle implements Behavior{
         public yoshi : Player.Yoshi;
-        public dead: Dead;
         public shoot: Shoot;  
         public m: Move;      
 

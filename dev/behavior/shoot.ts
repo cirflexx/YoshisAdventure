@@ -1,7 +1,5 @@
 class Shoot implements Behavior{
         public yoshi : Player.Yoshi;
-        public vehicleCloud : Player.VehicleCloud;
-        public dead : Dead;
         public m : Move;
         private egg: Projectile.Egg;
 
