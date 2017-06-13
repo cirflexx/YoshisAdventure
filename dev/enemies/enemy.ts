@@ -13,10 +13,9 @@ abstract class Enemy extends GameObject {
             this.x += this.speed;
             this.div.style.transform ="translate("+this.x+"px,"+this.y+"px)";
 
-            // Code door Robin
-            // Als FlyingKoopa uit het scherm is, wordt hij teruggezet naar x = 900. Anders heeft de game geen uitdaging meer na een paar seconden
+            // Als FlyingKoopa uit het scherm is, wordt hij teruggezet naar x = 1200
             if(this.x <= -90){
-                this.x = 900;
+                this.x = 1200;
                 Game.getInstance().score -=10;
             }
     }

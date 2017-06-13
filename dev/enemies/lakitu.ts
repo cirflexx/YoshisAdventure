@@ -1,7 +1,7 @@
 /// <reference path="enemy.ts" />
-namespace Enemies{
+namespace Enemies {
     export class Lakitu extends Enemy implements Observer {
-        constructor(parent:HTMLElement, subject: Subject) {
+        constructor(parent: HTMLElement, subject: Subject) {
             super("lakitu", parent);
 
             subject.subscribe(this);
@@ -12,32 +12,34 @@ namespace Enemies{
             this.width = 70;
         }
 
-        public notify(){
+        public notify() {
+            //Krijgt een notify van main.ts en voert de volgende functie uit
             this.changeMovementSpeed();
         }
 
-        public changeMovementSpeed(){
-            console.log("chnaging speed!");
+        public changeMovementSpeed() {
+            //Lakitu wordt voor 5 seconden vertraagd.
             this.speed = -0.5;
             setInterval(() => this.changeSpeedBack(), 5000);
         }
 
-        public changeSpeedBack(){
-            console.log("Changing speed back!");
+        public changeSpeedBack() {
+            //Sneleheid van Lakitu wordt na 5 seconden teruggezet
             this.speed = -3
         }
 
-        public draw():void {
+        public draw(): void {
             this.x += this.speed;
-            this.div.style.transform ="translate("+this.x+"px,"+this.y+"px)";
+            this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
 
-            if(this.x <= -130){
-                this.x = 900;
+            // Als Lakitu uit het scherm is, wordt hij teruggezet naar x = 1200
+            if (this.x <= -130) {
+                this.x = 1200;
                 this.y = Math.floor(Math.random() * 270) + 1;
-                if(Game.getInstance().powerupActive == false){
-                        this.speed = Math.floor(Math.random() * -6) - 1;
-                    }
-                Game.getInstance().score -=10;
+                if (Game.getInstance().powerupActive == false) {
+                    this.speed = Math.floor(Math.random() * -6) - 1;
+                }
+                Game.getInstance().score -= 10;
             }
         }
     }

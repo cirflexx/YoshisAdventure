@@ -13,17 +13,21 @@ class Dead implements Behavior{
     public performBehavior() : void{
     }
 
-    public onGoUp(){
+    public move(){
+
     }
 
-    public onGoDown(){
-    }
+    // public onGoUp(){
+    // }
 
-    public onGoForward(){
-    }
+    // public onGoDown(){
+    // }
+
+    // public onGoForward(){
+    // }
    
-    public onGoBack(){
-    }
+    // public onGoBack(){
+    // }
 
     public onShoot(): void{
     }

@@ -13,22 +13,19 @@ namespace Enemies{
         }
 
         public notify(){
+            //Krijgt een notify binnen van Game.ts en voert de functie uit
             this.changeMovementSpeed();
         }
 
         public changeMovementSpeed(){
-            console.log("chnaging speed!");
+            //Koopa wordt voor 5 seconden vertraagd.
             this.speed = -0.5;
             setInterval(() => this.changeSpeedBack(), 5000);
         }
 
         public changeSpeedBack(){
-            console.log("Changing speed back!");
+            //Als de 5 seconden voorbij zijn krijgt koopa zijn snelheid terug.
             this.speed = -5;
-        }
-
-        public draw():void {
-            super.draw();
         }
     }
 }

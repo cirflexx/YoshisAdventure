@@ -1,6 +1,6 @@
 class Shoot implements Behavior{
         public yoshi : Player.Yoshi;
-        public m : Move;
+        public ml : MoveLeft;
         private egg: Projectile.Egg;
 
     constructor(x: number, y: number){
@@ -14,20 +14,8 @@ class Shoot implements Behavior{
     public onShoot(): void{
     }
 
-    public onGoUp(){
-        this.m.onGoUp();
-    }
+    public move(){
 
-    public onGoDown(){
-        this.m.onGoDown();
-    }
-
-    public onGoForward(){
-        this.m.onGoForward();
-    }
-   
-    public onGoBack(){
-        this.m.onGoBack();
     }
     
 }

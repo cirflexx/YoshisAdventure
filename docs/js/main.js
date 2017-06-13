@@ -47,9 +47,6 @@ var Game = (function () {
     Game.prototype.gameLoop = function () {
         var _this = this;
         this.yoshi.update();
-        this.koopa.draw();
-        this.goomba.draw();
-        this.flyingKoopa.draw();
         for (var _i = 0, _a = this.eggCollection; _i < _a.length; _i++) {
             var egg_1 = _a[_i];
             egg_1.draw();
@@ -74,30 +71,28 @@ var Game = (function () {
         var container = document.getElementById('container');
         for (var _i = 0, _a = this.collisionArray; _i < _a.length; _i++) {
             var enemy = _a[_i];
+            enemy.draw();
             if (Utils.checkCollision(this.yoshi, enemy)) {
                 this.yoshi.onEnemyCollision();
                 this.gameOver();
             }
-        }
-        for (var _b = 0, _c = this.collisionArray; _b < _c.length; _b++) {
-            var enemy = _c[_b];
-            if (this.spawn150) {
+            if (this.powerup) {
                 if (Utils.checkCollision(this.yoshi, this.powerup)) {
                     this.powerup.div.remove();
-                    for (var _d = 0, _e = this.observers; _d < _e.length; _d++) {
-                        var o = _e[_d];
+                    for (var _b = 0, _c = this.observers; _b < _c.length; _b++) {
+                        var o = _c[_b];
                         o.notify();
                     }
                 }
             }
         }
-        for (var _f = 0, _g = this.eggCollection; _f < _g.length; _f++) {
-            var egg_2 = _g[_f];
-            for (var _h = 0, _j = this.collisionArray; _h < _j.length; _h++) {
-                var enemy = _j[_h];
+        for (var _d = 0, _e = this.eggCollection; _d < _e.length; _d++) {
+            var egg_2 = _e[_d];
+            for (var _f = 0, _g = this.collisionArray; _f < _g.length; _f++) {
+                var enemy = _g[_f];
                 if (Utils.checkCollision(egg_2, enemy)) {
                     this.addScore();
-                    enemy.x = 1000;
+                    enemy.x = 1200;
                     if (!this.powerupActive) {
                         enemy.speed = Math.floor(Math.random() * -6) - 1;
                     }
@@ -110,15 +105,20 @@ var Game = (function () {
                     if (enemy == this.collisionArray[4]) {
                         this.lakitu.y = Math.floor(Math.random() * 300) + 1;
                     }
-                    this.eggCollection.splice(egg_2, 1);
-                    egg_2.div.remove();
+                    this.removeEgg(egg_2);
                 }
             }
-            if (egg_2.x >= 1200) {
-                this.eggCollection.splice(egg_2, 1);
-                egg_2.div.remove();
+            if (egg_2.x <= -800) {
+                this.removeEgg(egg_2);
             }
         }
+    };
+    Game.prototype.removeEgg = function (egg) {
+        var i = this.eggCollection.indexOf(egg);
+        if (i != -1) {
+            this.eggCollection.splice(i, 1);
+        }
+        egg.div.remove();
     };
     Game.prototype.liveScore = function () {
         this.score += 0.020;
@@ -142,12 +142,6 @@ var Game = (function () {
         else if (this.score > 150 && this.score < 170 && !this.spawn150) {
             this.powerup = new Powerup(container);
             this.spawn150 = true;
-        }
-        if (this.spawn50) {
-            this.flyingKoopa2.draw();
-        }
-        if (this.spawn100) {
-            this.lakitu.draw();
         }
         if (this.spawn150) {
             this.powerup.draw();
@@ -236,77 +230,81 @@ var Dead = (function () {
     }
     Dead.prototype.performBehavior = function () {
     };
-    Dead.prototype.onGoUp = function () {
-    };
-    Dead.prototype.onGoDown = function () {
-    };
-    Dead.prototype.onGoForward = function () {
-    };
-    Dead.prototype.onGoBack = function () {
+    Dead.prototype.move = function () {
     };
     Dead.prototype.onShoot = function () {
     };
     return Dead;
 }());
-var Idle = (function () {
-    function Idle(y) {
-    }
-    Idle.prototype.performBehavior = function () {
-    };
-    Idle.prototype.onIdle = function () {
-        this.yoshi.div.style.backgroundImage = "url('https://media.giphy.com/media/brvL9sNJZtFZe/giphy.gif?response_id=59205316163de286ba4848ec')";
-    };
-    Idle.prototype.onGoForward = function () {
-        this.m.onGoForward();
-    };
-    Idle.prototype.onGoBack = function () {
-        this.m.onGoBack();
-    };
-    Idle.prototype.onGoUp = function () {
-        this.m.onGoUp();
-    };
-    Idle.prototype.onGoDown = function () {
-        this.m.onGoDown();
-    };
-    Idle.prototype.onShoot = function () {
-        this.shoot.onShoot();
-    };
-    return Idle;
-}());
-var Move = (function () {
-    function Move(y) {
+var MoveDown = (function () {
+    function MoveDown(y) {
         this.yoshi = y;
     }
-    Move.prototype.performBehavior = function () {
+    MoveDown.prototype.performBehavior = function () {
         this.yoshi.div.style.transform = "translate(" + this.yoshi.x + "px," + this.yoshi.y + "px)";
     };
-    Move.prototype.onGoForward = function () {
-        this.yoshi.speed = 7;
-        this.yoshi.x += this.yoshi.speed;
+    MoveDown.prototype.move = function () {
+        this.yoshi.y += this.yoshi.jumpDirection = 4;
+        if (this.yoshi.y > 332) {
+            this.yoshi.y = 332;
+        }
     };
-    Move.prototype.onGoBack = function () {
-        this.yoshi.speed = 7;
+    MoveDown.prototype.onShoot = function () {
+    };
+    return MoveDown;
+}());
+var MoveLeft = (function () {
+    function MoveLeft(y) {
+        this.yoshi = y;
+    }
+    MoveLeft.prototype.performBehavior = function () {
+        this.yoshi.div.style.transform = "translate(" + this.yoshi.x + "px," + this.yoshi.y + "px)";
+    };
+    MoveLeft.prototype.move = function () {
+        this.yoshi.speed = 4;
         this.yoshi.x -= this.yoshi.speed;
         if (this.yoshi.x < 0) {
             this.yoshi.x = 0;
         }
     };
-    Move.prototype.onGoUp = function () {
-        this.yoshi.y -= this.yoshi.jumpDirection = 7;
+    MoveLeft.prototype.onShoot = function () {
+    };
+    return MoveLeft;
+}());
+var MoveRight = (function () {
+    function MoveRight(y) {
+        this.yoshi = y;
+    }
+    MoveRight.prototype.performBehavior = function () {
+        this.yoshi.div.style.transform = "translate(" + this.yoshi.x + "px," + this.yoshi.y + "px)";
+    };
+    MoveRight.prototype.move = function () {
+        this.yoshi.speed = 4;
+        this.yoshi.x += this.yoshi.speed;
+        if (this.yoshi.x > 750) {
+            this.yoshi.x = 750;
+        }
+    };
+    MoveRight.prototype.onShoot = function () {
+    };
+    return MoveRight;
+}());
+var MoveUp = (function () {
+    function MoveUp(y) {
+        this.yoshi = y;
+    }
+    MoveUp.prototype.performBehavior = function () {
+        this.yoshi.div.style.transform = "translate(" + this.yoshi.x + "px," + this.yoshi.y + "px)";
+    };
+    MoveUp.prototype.move = function () {
+        this.yoshi.y -= this.yoshi.jumpDirection = 4;
         if (this.yoshi.y < 0) {
             this.yoshi.y = 0;
         }
     };
-    Move.prototype.onGoDown = function () {
-        this.yoshi.y += this.yoshi.jumpDirection = 7;
-        if (this.yoshi.y > 332) {
-            this.yoshi.y = 332;
-        }
+    MoveUp.prototype.onShoot = function () {
     };
-    Move.prototype.onShoot = function () {
-        this.shoot.onShoot();
-    };
-    return Move;
+    return MoveUp;
 }());
 var Shoot = (function () {
     function Shoot(x, y) {
@@ -317,17 +315,7 @@ var Shoot = (function () {
     };
     Shoot.prototype.onShoot = function () {
     };
-    Shoot.prototype.onGoUp = function () {
-        this.m.onGoUp();
-    };
-    Shoot.prototype.onGoDown = function () {
-        this.m.onGoDown();
-    };
-    Shoot.prototype.onGoForward = function () {
-        this.m.onGoForward();
-    };
-    Shoot.prototype.onGoBack = function () {
-        this.m.onGoBack();
+    Shoot.prototype.move = function () {
     };
     return Shoot;
 }());
@@ -344,7 +332,7 @@ var Enemy = (function (_super) {
         this.x += this.speed;
         this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
         if (this.x <= -90) {
-            this.x = 900;
+            this.x = 1200;
             Game.getInstance().score -= 10;
         }
     };
@@ -371,19 +359,17 @@ var Enemies;
             };
             FlyingKoopa.prototype.changeMovementSpeed = function () {
                 var _this = this;
-                console.log("chnaging speed!");
                 this.speed = -0.5;
                 setInterval(function () { return _this.changeSpeedBack(); }, 5000);
             };
             FlyingKoopa.prototype.changeSpeedBack = function () {
-                console.log("Changing speed back!");
                 this.speed = -3;
             };
             FlyingKoopa.prototype.draw = function () {
                 this.x += this.speed;
                 this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
                 if (this.x <= -130) {
-                    this.x = 900;
+                    this.x = 1200;
                     this.y = Math.floor(Math.random() * 270) + 1;
                     if (Game.getInstance().powerupActive == false) {
                         this.speed = Math.floor(Math.random() * -6) - 1;
@@ -418,19 +404,17 @@ var Enemies;
             };
             FlyingKoopa.prototype.changeMovementSpeed = function () {
                 var _this = this;
-                console.log("chnaging speed!");
                 this.speed = -0.5;
                 setInterval(function () { return _this.changeSpeedBack(); }, 5000);
             };
             FlyingKoopa.prototype.changeSpeedBack = function () {
-                console.log("Changing speed back!");
                 this.speed = -3;
             };
             FlyingKoopa.prototype.draw = function () {
                 this.x += this.speed;
                 this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
                 if (this.x <= -130) {
-                    this.x = 900;
+                    this.x = 1200;
                     this.y = Math.floor(Math.random() * 270) + 1;
                     if (Game.getInstance().powerupActive == false) {
                         this.speed = Math.floor(Math.random() * -6) - 1;
@@ -463,16 +447,11 @@ var Enemies;
         };
         Goomba.prototype.changeMovementSpeed = function () {
             var _this = this;
-            console.log("chnaging speed!");
             this.speed = -0.5;
             setInterval(function () { return _this.changeSpeedBack(); }, 5000);
         };
         Goomba.prototype.changeSpeedBack = function () {
-            console.log("Changing speed back!");
-            this.speed = -4;
-        };
-        Goomba.prototype.draw = function () {
-            _super.prototype.draw.call(this);
+            this.speed = -5;
         };
         return Goomba;
     }(Enemy));
@@ -498,16 +477,11 @@ var Enemies;
         };
         Koopa.prototype.changeMovementSpeed = function () {
             var _this = this;
-            console.log("chnaging speed!");
             this.speed = -0.5;
             setInterval(function () { return _this.changeSpeedBack(); }, 5000);
         };
         Koopa.prototype.changeSpeedBack = function () {
-            console.log("Changing speed back!");
             this.speed = -5;
-        };
-        Koopa.prototype.draw = function () {
-            _super.prototype.draw.call(this);
         };
         return Koopa;
     }(Enemy));
@@ -533,19 +507,17 @@ var Enemies;
         };
         Lakitu.prototype.changeMovementSpeed = function () {
             var _this = this;
-            console.log("chnaging speed!");
             this.speed = -0.5;
             setInterval(function () { return _this.changeSpeedBack(); }, 5000);
         };
         Lakitu.prototype.changeSpeedBack = function () {
-            console.log("Changing speed back!");
             this.speed = -3;
         };
         Lakitu.prototype.draw = function () {
             this.x += this.speed;
             this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
             if (this.x <= -130) {
-                this.x = 900;
+                this.x = 1200;
                 this.y = Math.floor(Math.random() * 270) + 1;
                 if (Game.getInstance().powerupActive == false) {
                     this.speed = Math.floor(Math.random() * -6) - 1;
@@ -604,39 +576,36 @@ var Player;
             _this.height = 70;
             _this.width = 70;
             var vehicleCloud = new Player.VehicleCloud(_this.div, -18, 50);
-            _this.behavior = new Move(_this);
+            _this.behavior = new MoveLeft(_this);
             window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
+            window.addEventListener("mousedown", function (e) { return _this.onKeyDown(e); });
             return _this;
         }
         Yoshi.prototype.onKeyDown = function (e) {
-            console.log(e.key);
-            if (e.keyCode == Controls.UP && Game.getInstance().running == true) {
-                this.behavior = new Move(this);
-                this.onGoUp();
-            }
-            if (e.keyCode == Controls.DOWN && Game.getInstance().running == true) {
-                this.behavior = new Move(this);
-                this.onGoDown();
-            }
-            if (e.keyCode == Controls.RIGHT && Game.getInstance().running == true) {
-                this.behavior = new Move(this);
-                this.onGoForward();
-            }
-            if (e.keyCode == Controls.LEFT && Game.getInstance().running == true) {
-                this.behavior = new Move(this);
-                this.onGoBack();
-            }
-            if (e.keyCode == Controls.SPACE && Game.getInstance().running == true) {
-                this.shooting = true;
-                if (this.timer > 20) {
-                    this.timer = 1;
-                    this.shooting = false;
+            if (e instanceof KeyboardEvent) {
+                if (e.keyCode == Controls.UP && Game.getInstance().running == true) {
+                    this.behavior = new MoveUp(this);
+                }
+                if (e.keyCode == Controls.DOWN && Game.getInstance().running == true) {
+                    this.behavior = new MoveDown(this);
+                }
+                if (e.keyCode == Controls.RIGHT && Game.getInstance().running == true) {
+                    this.behavior = new MoveRight(this);
+                }
+                if (e.keyCode == Controls.LEFT && Game.getInstance().running == true) {
+                    this.behavior = new MoveLeft(this);
+                }
+                if (e.keyCode == Controls.SPACE && Game.getInstance().running == true) {
                     this.onShoot();
                 }
+            }
+            if (e instanceof MouseEvent) {
+                this.onShoot();
             }
         };
         Yoshi.prototype.update = function () {
             this.behavior.performBehavior();
+            this.behavior.move();
             if (this.shooting = true) {
                 this.timer++;
             }
@@ -644,20 +613,13 @@ var Player;
         Yoshi.prototype.onEnemyCollision = function () {
             this.behavior = new Dead(this);
         };
-        Yoshi.prototype.onGoUp = function () {
-            this.behavior.onGoUp();
-        };
-        Yoshi.prototype.onGoDown = function () {
-            this.behavior.onGoDown();
-        };
-        Yoshi.prototype.onGoForward = function () {
-            this.behavior.onGoForward();
-        };
-        Yoshi.prototype.onGoBack = function () {
-            this.behavior.onGoBack();
-        };
         Yoshi.prototype.onShoot = function () {
-            this.behavior = new Shoot(this.x, this.y);
+            this.shooting = true;
+            if (this.timer > 20) {
+                this.timer = 1;
+                this.shooting = false;
+                this.behavior = new Shoot(this.x, this.y);
+            }
         };
         return Yoshi;
     }(GameObject));
