@@ -9,7 +9,7 @@ Er is ook een powerup te krijgen in het spel (sneeuwvlokje), deze geeft je een v
 https://cirflexx.github.io/YoshisAdventure/
 
 ## Controls
-- Spatie = schieten
+- Spatie/linker muisknop = schieten
 - W = omhoog
 - A = Naar links
 - S = Naar beneden
@@ -23,7 +23,7 @@ Rechts boven in de hoek staat een refresh knop, als je op deze klikt wordt de we
 - Ga naar de map docs en klik op index.HTML om het spel lokaal te spelen.
 
 ## Toepassingen
-- Strategy - Deze heb ik toegepast om de Stategy pattern toe te passen, deze bevat het gedrag van Yoshi. De interface heet Behaviour.
+- Strategy - Dee strategy pattern bevat het gedrag van Yoshi. De interface heet Behaviour. Dit wordt gebruikt om te bewegen schieten en dood te gaan.
 - Observer - Game is een Subject die checkt of Yoshi en de powerup elkaar raken. Als dit zo is stuurt deze een notifier af aan alle enemies. Deze worden dan voor 5 seconden erg sloom.
 - Singleton - Deze heb ik aangemaakt in de game.ts, zodat deze in elke andere class is aan te spreken zonder gedoe. Wordt meerdere keren gebruikt in yoshi.ts.
 - Interface - Gebruikt bij de strategy pattern en observer pattern. Bij strategy in behavior.ts. Bij observer in observer.ts en subject.ts.
