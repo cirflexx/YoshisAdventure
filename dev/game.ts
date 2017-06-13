@@ -10,8 +10,7 @@ class Game implements Subject {
     private lakitu: Enemies.Lakitu;
     private powerup: Powerup;
 
-    private timer: number = 200;
-    private speedTimer: number = 500;
+    private speedTimer: number = 300;
     public running: boolean = true;
     public score: number = 0;
     public powerupActive: boolean = false;
@@ -105,6 +104,12 @@ class Game implements Subject {
 
             // checkt of yoshi tegen enemies aan komt
             if (Utils.checkCollision(this.yoshi, enemy)) {
+                enemy.x += 20;
+                
+                    for (let o of this.observers) {
+                        o.notify();
+                    }
+                    enemy.speed = 0;
                 // Zorgt voor de animatie dat Yoshi dood gaat.
                 this.yoshi.onEnemyCollision();
                 // Als Yoshi tegen een enemy aan komt roept het spel de funtie gameOver aan. Het spel is afgelopen.
@@ -172,8 +177,8 @@ class Game implements Subject {
 
     private liveScore() {
         // Er wordt (bijna) elke seconde een punt bij score opgeteld.
-        this.score += 0.020;
-        document.getElementById("liveScore").innerHTML = "Score: " + Math.floor(this.score);
+            this.score += 0.020;
+            document.getElementById("liveScore").innerHTML = "Score: " + Math.floor(this.score);
     }
 
     private addScore() {
@@ -213,6 +218,7 @@ class Game implements Subject {
 
 
     private gameOver() {
+
         // Telt de score op van 0 tot de score van de speler ( 0-21, 0-58, etc...)
         let counter = { score: 0 };
         TweenMax.to(counter, 2, {
@@ -241,13 +247,12 @@ class Game implements Subject {
         let refreshbtn = document.getElementById("btn_refreshPage");
         TweenLite.to(refreshbtn, 2, { x: -365, y: 270, scale: 1.5 });
 
-        // Als de timer onder de 1 komt wordt de boolean running op 0 gezet.
-        this.timer--;
-        if (this.timer < 1) {
-            this.running = false;
-        }
-        console.log(this.timer);
+        // De running wordt false, de gameLoop stopt.
+        this.running = false;
+
     }
+
+    
 
     public addEgg(egg) {
         // De aagemaakte eieren worden in een array geplaatst.

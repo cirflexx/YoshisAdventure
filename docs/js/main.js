@@ -12,8 +12,7 @@ var Game = (function () {
     function Game() {
         var _this = this;
         this.observers = new Array();
-        this.timer = 200;
-        this.speedTimer = 500;
+        this.speedTimer = 300;
         this.running = true;
         this.score = 0;
         this.powerupActive = false;
@@ -73,23 +72,29 @@ var Game = (function () {
             var enemy = _a[_i];
             enemy.draw();
             if (Utils.checkCollision(this.yoshi, enemy)) {
+                enemy.x += 20;
+                for (var _b = 0, _c = this.observers; _b < _c.length; _b++) {
+                    var o = _c[_b];
+                    o.notify();
+                }
+                enemy.speed = 0;
                 this.yoshi.onEnemyCollision();
                 this.gameOver();
             }
             if (this.powerup) {
                 if (Utils.checkCollision(this.yoshi, this.powerup)) {
                     this.powerup.div.remove();
-                    for (var _b = 0, _c = this.observers; _b < _c.length; _b++) {
-                        var o = _c[_b];
+                    for (var _d = 0, _e = this.observers; _d < _e.length; _d++) {
+                        var o = _e[_d];
                         o.notify();
                     }
                 }
             }
         }
-        for (var _d = 0, _e = this.eggCollection; _d < _e.length; _d++) {
-            var egg_2 = _e[_d];
-            for (var _f = 0, _g = this.collisionArray; _f < _g.length; _f++) {
-                var enemy = _g[_f];
+        for (var _f = 0, _g = this.eggCollection; _f < _g.length; _f++) {
+            var egg_2 = _g[_f];
+            for (var _h = 0, _j = this.collisionArray; _h < _j.length; _h++) {
+                var enemy = _j[_h];
                 if (Utils.checkCollision(egg_2, enemy)) {
                     this.addScore();
                     enemy.x = 1200;
@@ -165,11 +170,7 @@ var Game = (function () {
         document.getElementById("liveScore").remove();
         var refreshbtn = document.getElementById("btn_refreshPage");
         TweenLite.to(refreshbtn, 2, { x: -365, y: 270, scale: 1.5 });
-        this.timer--;
-        if (this.timer < 1) {
-            this.running = false;
-        }
-        console.log(this.timer);
+        this.running = false;
     };
     Game.prototype.addEgg = function (egg) {
         this.eggCollection.push(egg);
