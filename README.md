@@ -36,6 +36,7 @@ Rechts boven in de hoek staat een refresh knop, als je op deze klikt wordt de we
 - Enumeration - Staat in de enumerations folder. Hierin worden de keycodes omgezet in constanten die ik gebruik in yoshi.ts voor bewegen en schieten.
 - Polymorfisme - In game.ts wordt er in onCollision() door de Array met enemies heen geloopt. Door deze loop wordt de draw functie voor elke enemy aangeroepen.
 - Game Loop - In game.ts wordt in de constructor de functie gameloop aangeroepen. Deze roept de functies die erin staan constant uit omdat Game Loop zichzelf aanroept. Hierdoor wordt alles binnen Gameloop geupdated. 
+- Inheritance - Goomba, Koopa, Lakitu en de andere vijanden erven van enemy.ts. Enemy.ts is een child van gameObject.ts. Yoshi, vihicleCloud en Egg erven ook van gameObject.ts.
 
 ## UML
 ![alt text](https://raw.githubusercontent.com/cirflexx/YoshisAdventure/master/UML-YoshisRevenge.png)
