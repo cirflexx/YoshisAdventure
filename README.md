@@ -42,3 +42,25 @@ Rechts boven in de hoek staat een refresh knop, als je op deze klikt wordt de we
 ![alt text](https://raw.githubusercontent.com/cirflexx/YoshisAdventure/master/UML-YoshisRevenge.png)
 
 -------------------------------------------------------------------------------------
+### Week 7 review(Maarten)
+- Strategy - Strategy pattern goed toegepast, niet alleen maar voor de beweging, maar ook het behaviour dead en shoot.
+- Observer - De game gebruikt de interface subject correct, en alle enemies zijn de observer class. Zo is er erg handig gebruik gemaakt van de observer. Hierdoor kunnen gemakkelijk alle enemies aangeroepen worden in de game door de functie notify().
+- Inheritance - Staat niet in de readme, maar is wel goed toegepast, En het is ook mooi om te zien dat de enemy erft van de gameobject en bijvoorbeeld goomba dan weer erft van enemy. Alle andere objecten erven ook van gameobject dus dat is goed geimplementeerd. één ding lijkt mij wel overbodig, er zijn 2 classes van de flyingKoopa. Het enigste wat in mijn ogen verandert zijn de kleuren. Zo is veel code hetzelfde. 
+- Singleton - Singleton wordt aangemaakt en wordt ook goed gebruikt.
+- Interface - De interface wordt correct gebruikt, bijvoorbeeld bij de Observer.
+- Encapsulation - Encapsulation wordt goed toegepast, zo zijn er geen overbodige public en of private's. Protected wordt helaas niet gebruikt, dat zou wel toegepast moeten worden in de class gameobject.
+- Composition -  Correct toegepast.
+- Abstract class - Correct toegepast.
+- Static class - Gebruikt gemaakt van een static class, bijvoorbeeld in de util class. Zo kan deze gemakkelijk in alle bestanden aangeroepen worden.
+- Library - Erg goed gebruik gemaakt van de animaties van greensock. Zo zijn de css animaties vervangen, wat natuurlijk erg veel voordeel heeft in de peformance van het spel.
+- Namespaces - Goed over nagedacht en correct toegpast.
+- Enumeration - Slim gebruik gemaakt van Enumeration bij de keycodes. Zo is overzichtelijk in de code te zien welke toets je moet indrukken.
+- Polymorfisme - Mooi gebruik gemaakt van polymorfisme, alle enemies in één array gestopt. En elke enemy gebruikt ook zo zijn eigen functie.
+- Game Loop - Correct toegepast.
+- UML - De UML is goed, al zie je wel dat er in de game veel dingen worden aangemaakt. Zo ook spawn50,100,150. Dit had anders opgelost kunnen worden.
+
+Beoordeling:
+Voldoende
+
+Uitleg beoordeling:
+Wat kleine foutjes, maar er zijn vele onderwerp uitstekend uitgevoerd en alles zit erin. Zo heeft de game ook geen bugs en is het goed speelbaar. Ook heeft het een einde en wat ook handig is een restart knop. Prima :)
